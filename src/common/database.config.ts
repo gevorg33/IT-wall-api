@@ -1,4 +1,14 @@
+import * as path from 'path';
+import * as dotenv from 'dotenv';
 import { ConnectionOptions } from 'typeorm';
+
+// const env = process.env.NODE_ENV || 'dev';
+const dotenv_path = path.resolve(process.cwd(), `.env`);
+const result = dotenv.config({ path: dotenv_path });
+if (result.error) {
+  /* do nothing */
+}
+console.log(process.env.PG_HOST, 'assaasa');
 export const DatabaseConfig: ConnectionOptions = {
   type: 'postgres',
   host: process.env.PG_HOST,

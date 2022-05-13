@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { UserEntity } from '../user.entity';
 import { Reflector } from '@nestjs/core';
-import { Payee } from '../models/payee.model';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -24,12 +23,12 @@ export class RolesGuard implements CanActivate {
     if (!user) {
       throw new UnauthorizedException('Unauthorized');
     }
-    if (user instanceof UserEntity) {
-      const exist = user.roles.find((r) => roles.includes(r.name));
-      if (exist) return true;
-    } else if (user instanceof Payee && roles.includes('Payee')) {
-      return true;
-    }
+    // if (user instanceof UserEntity) {
+    //   const exist = user.role.find((r) => roles.includes(r.name));
+    //   if (exist) return true;
+    // } else if (user instanceof Payee && roles.includes('Payee')) {
+    //   return true;
+    // }
     throw new ForbiddenException('Not Permitted, You have no access');
   }
 }

@@ -2,12 +2,14 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  ManyToMany,
+  JoinColumn, JoinTable, ManyToMany, ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+  OneToOne,
+  PrimaryGeneratedColumn
+} from "typeorm";
 import { hash } from 'bcrypt';
-import { JoinTable } from 'typeorm';
+import { RolesEntity } from '../roles/roles.entity';
+import { CompanyEntity } from '../company/company.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -34,18 +36,19 @@ export class UserEntity {
     this.password = await hash(this.password, 10);
   }
 
-  // connect to roles table with roleID
-  // @BelongsToMany(() => Role, () => UserRole)
-  // roles: Role[];
+  @OneToOne(() => CompanyEntity, (company) => company.id, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  myCompany: CompanyEntity;
 
-  // @BelongsTo(() => Company)
-  // company: Company;
-  //
+  @ManyToOne(() => RolesEntity, (role) => role.id)
+  @JoinColumn()
+  role: RolesEntity;
 
-  // @OneToMany(() => ArticleEntity, (article) => article.author)
-  // articles: ArticleEntity[];
-  //
-  // @ManyToMany(() => ArticleEntity)
-  // @JoinTable()
-  // favorites: ArticleEntity[];
+  @ManyToMany(() => CompanyEntity, (company) => company.id, {
+    onDelete: 'CASCADE',
+  })
+  @JoinTable()
+  companies: CompanyEntity[];
 }

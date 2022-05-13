@@ -9,18 +9,30 @@ import { UserResponseInterface } from './types/userResponse.interface';
 import { compare } from 'bcrypt';
 import { LoginUserDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { UserRoles } from "../constanst/main-enums";
+import { RolesEntity } from '../roles/roles.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(RolesEntity)
+    private readonly rolesEntityRepository: Repository<RolesEntity>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const userByEmail = await this.userRepository.findOne({
       email: createUserDto.email,
     });
+    // TODO: oneToOne
+    // await this.userRepository.create({
+    //   ...createUserDto,
+    //   myCompany: user or user.id
+    // }).save()
+    //TODO: manyToMany
+    // user.companies.push({yourObj})
+
 
     if (userByEmail) {
       throw new HttpException(

@@ -2,11 +2,11 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  OneToMany,
+  OneToOne,
+  JoinColumn,
+  BaseEntity,
 } from 'typeorm';
-import { JoinTable } from 'typeorm';
-import { BaseEntity } from '../base.entity/base.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Entity({ name: 'companies' })
 export class CompanyEntity extends BaseEntity {
@@ -19,20 +19,10 @@ export class CompanyEntity extends BaseEntity {
   @Column()
   taxNumber: number;
 
-  // createdUserId connect relation to user table
-  @Column()
-  cratedUserId: number;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
-  // @BelongsTo(() => Company)
-  // company: Company;
-  //
-  // @BelongsToMany(() => Role, () => UserRole)
-  // roles: Role[];
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 
-  // @OneToMany(() => ArticleEntity, (article) => article.author)
-  // articles: ArticleEntity[];
-  //
-  // @ManyToMany(() => ArticleEntity)
-  // @JoinTable()
-  // favorites: ArticleEntity[];
 }
