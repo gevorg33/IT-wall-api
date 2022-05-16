@@ -37,7 +37,7 @@ export class UserController {
   @ApiOperation({ summary: 'Authentication' })
   @UsePipes(new ValidationPipe())
   async login(
-    @Body('user') loginUserDto: LoginUserDto,
+    @Body('') loginUserDto: LoginUserDto,
   ): Promise<UserResponseInterface> {
     const user = await this.userService.login(loginUserDto);
     return this.userService.buildUserResponse(user);

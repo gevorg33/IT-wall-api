@@ -81,5 +81,5 @@ export class CreateUserDto {
   role: UserRoles;
 
   @ApiProperty()
-  companyCreateDto?: CreateCompanyDto;
+  company?: CreateCompanyDto;
 }

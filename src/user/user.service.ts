@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 import { UserResponseInterface } from './types/userResponse.interface';
@@ -28,10 +28,6 @@ export class UserService {
     const userByEmail = await this.userRepository.findOne({
       email: createUserDto.email,
     });
-    // await this.userRepository.create({
-    //   ...createUserDto,
-    //   myCompany: user or user.id
-    // }).save()
     if (userByEmail) {
       throw new HttpException(
         'Email are already taken',
@@ -47,7 +43,7 @@ export class UserService {
     });
     if (createUserDto.role === UserRoles.COMPANY) {
       newUser.myCompany = await this.companyRepository.save(
-        createUserDto.companyCreateDto,
+        createUserDto.company,
       );
     }
     return this.userRepository.save(newUser);
@@ -89,9 +85,20 @@ export class UserService {
       );
     }
 
-    delete user.password;
+    const queryBuilder = getRepository(UserEntity)
+      .createQueryBuilder('users')
+      .leftJoinAndSelect('users.myCompany', 'myCompany')
+      .where('users.id = :id', {
+        id: user.id,
+      });
 
-    return user;
+    const userWithCompany = await queryBuilder.getOne();
+
+    if (userWithCompany.myCompany === null) {
+      delete userWithCompany.myCompany;
+    }
+
+    return userWithCompany;
   }
 
   findById(id: number): Promise<UserEntity> {
