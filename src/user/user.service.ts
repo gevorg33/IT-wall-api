@@ -9,8 +9,9 @@ import { UserResponseInterface } from './types/userResponse.interface';
 import { compare } from 'bcrypt';
 import { LoginUserDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { UserRoles } from "../constanst/main-enums";
+import { UserRoles } from '../constanst/main-enums';
 import { RolesEntity } from '../roles/roles.entity';
+import { CompanyEntity } from '../company/company.entity';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,8 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RolesEntity)
     private readonly rolesEntityRepository: Repository<RolesEntity>,
+    @InjectRepository(CompanyEntity)
+    private readonly companyRepository: Repository<CompanyEntity>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -33,17 +36,26 @@ export class UserService {
     //TODO: manyToMany
     // user.companies.push({yourObj})
 
-
     if (userByEmail) {
       throw new HttpException(
         'Email are already taken',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
+    const role = await this.rolesEntityRepository.findOne({
+      name: createUserDto.role,
+    });
+    const newUser = await this.userRepository.create({
+      ...createUserDto,
+      role,
+    });
 
-    const newUser = new UserEntity();
-    Object.assign(newUser, createUserDto);
-    return await this.userRepository.save(newUser);
+    if (createUserDto.role === UserRoles.COMPANY) {
+      newUser.myCompany = await this.companyRepository.save(
+        createUserDto.companyCreateDto,
+      );
+    }
+    return this.userRepository.save(newUser);
   }
 
   async login(loginUserDto: LoginUserDto): Promise<UserEntity> {

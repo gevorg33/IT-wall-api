@@ -21,9 +21,9 @@ import { CompanyModule } from './company/company.module';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({
-      path: '*',
-      method: RequestMethod.ALL,
-    });
+    // consumer.apply(AuthMiddleware).forRoutes({
+    //   path: '*',
+    //   method: RequestMethod.ALL,
+    // });
   }
 }

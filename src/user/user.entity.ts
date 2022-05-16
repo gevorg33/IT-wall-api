@@ -26,7 +26,7 @@ export class UserEntity {
   email: string;
 
   @Column()
-  phoneNumber: number;
+  phoneNumber: string;
 
   @Column({ select: false })
   password: string;

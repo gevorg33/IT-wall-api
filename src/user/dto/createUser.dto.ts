@@ -5,10 +5,15 @@ import {
   IsPhoneNumber,
   IsString,
   MinLength,
-  Length,
-} from 'class-validator';
+  Length, IsNumber
+} from "class-validator";
 import { Match } from '../../decorators/match.decorator';
 import { ApiProperty } from '@nestjs/swagger';
+import { RolesEntity } from "../../roles/roles.entity";
+import { Type } from "class-transformer";
+import { UserRoles } from "../../constanst/main-enums";
+import { Column } from "typeorm";
+import { CreateCompanyDto } from "../../company/dto/create.company.dto";
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -73,4 +78,11 @@ export class CreateUserDto {
   @Match('password')
   @ApiProperty({ example: 'test123' })
   confirmPassword: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ example: UserRoles.COMPANY })
+  role: UserRoles;
+
+  @ApiProperty()
+  companyCreateDto?: CreateCompanyDto;
 }

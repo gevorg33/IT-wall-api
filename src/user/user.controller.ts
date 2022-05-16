@@ -27,7 +27,7 @@ export class UserController {
   @ApiOperation({ summary: 'Authentication' })
   @UsePipes(new ValidationPipe())
   async createUser(
-    @Body('user') createUserDto: CreateUserDto,
+    @Body('') createUserDto: CreateUserDto,
   ): Promise<UserResponseInterface> {
     const user = await this.userService.createUser(createUserDto);
     return this.userService.buildUserResponse(user);
