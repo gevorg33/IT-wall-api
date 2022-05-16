@@ -1,8 +1,7 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class LoginUserDto{
-
+export class LoginUserDto {
   @IsNotEmpty()
   @IsString()
   @IsEmail()
@@ -22,5 +21,4 @@ export class LoginUserDto{
       'password must be contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character',
   })
   readonly password: string;
-
 }

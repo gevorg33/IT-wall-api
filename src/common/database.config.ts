@@ -8,7 +8,6 @@ const result = dotenv.config({ path: dotenv_path });
 if (result.error) {
   /* do nothing */
 }
-console.log(process.env.PG_HOST, 'assaasa');
 export const DatabaseConfig: ConnectionOptions = {
   type: 'postgres',
   host: process.env.PG_HOST,

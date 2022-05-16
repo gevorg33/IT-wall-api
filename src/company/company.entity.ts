@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  BaseEntity,
-} from 'typeorm';
-import { UserEntity } from '../user/user.entity';
+import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
 
 @Entity({ name: 'companies' })
 export class CompanyEntity extends BaseEntity {
@@ -24,5 +16,4 @@ export class CompanyEntity extends BaseEntity {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
 }

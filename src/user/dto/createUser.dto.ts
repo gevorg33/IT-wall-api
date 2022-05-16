@@ -5,15 +5,12 @@ import {
   IsPhoneNumber,
   IsString,
   MinLength,
-  Length, IsNumber
-} from "class-validator";
+  Length,
+} from 'class-validator';
 import { Match } from '../../decorators/match.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-import { RolesEntity } from "../../roles/roles.entity";
-import { Type } from "class-transformer";
-import { UserRoles } from "../../constanst/main-enums";
-import { Column } from "typeorm";
-import { CreateCompanyDto } from "../../company/dto/create.company.dto";
+import { UserRoles } from '../../constanst/main-enums';
+import { CreateCompanyDto } from '../../company/dto/create.company.dto';
 
 export class CreateUserDto {
   @IsNotEmpty()

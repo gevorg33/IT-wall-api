@@ -19,7 +19,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RolesEntity)
-    private readonly rolesEntityRepository: Repository<RolesEntity>,
+    private readonly rolesRepository: Repository<RolesEntity>,
     @InjectRepository(CompanyEntity)
     private readonly companyRepository: Repository<CompanyEntity>,
   ) {}
@@ -28,28 +28,23 @@ export class UserService {
     const userByEmail = await this.userRepository.findOne({
       email: createUserDto.email,
     });
-    // TODO: oneToOne
     // await this.userRepository.create({
     //   ...createUserDto,
     //   myCompany: user or user.id
     // }).save()
-    //TODO: manyToMany
-    // user.companies.push({yourObj})
-
     if (userByEmail) {
       throw new HttpException(
         'Email are already taken',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
-    const role = await this.rolesEntityRepository.findOne({
+    const role = await this.rolesRepository.findOne({
       name: createUserDto.role,
     });
     const newUser = await this.userRepository.create({
       ...createUserDto,
       role,
     });
-
     if (createUserDto.role === UserRoles.COMPANY) {
       newUser.myCompany = await this.companyRepository.save(
         createUserDto.companyCreateDto,

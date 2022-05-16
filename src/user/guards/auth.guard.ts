@@ -1,10 +1,18 @@
 import { ExpressRequestInterface } from '../../types/expressRequest.interface';
-import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import {
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest<ExpressRequestInterface>();
+    const request = context
+      .switchToHttp()
+      .getRequest<ExpressRequestInterface>();
 
     if (request.user) {
       return true;
@@ -12,5 +20,4 @@ export class AuthGuard implements CanActivate {
 
     throw new HttpException('Not authorized', HttpStatus.UNAUTHORIZED);
   }
-
 }

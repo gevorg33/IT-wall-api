@@ -2,11 +2,13 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  JoinColumn, JoinTable, ManyToMany, ManyToOne,
-  OneToMany,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   OneToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { hash } from 'bcrypt';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
