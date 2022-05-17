@@ -7,17 +7,14 @@ import {
   ManyToMany,
   ManyToOne,
   OneToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { hash } from 'bcrypt';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
+import { AbstractEntity } from '../../common/abstract.entity';
 
 @Entity({ name: 'users' })
-export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserEntity extends AbstractEntity {
   @Column()
   firstName: string;
 
@@ -33,19 +30,29 @@ export class UserEntity {
   @Column({ select: false })
   password: string;
 
+  @Column({ nullable: true })
+  myCompanyId: number;
+
+  @Column()
+  roleId: number;
+
+  ///////////////////////////////// Triggers /////////////////////////////////
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await hash(this.password, 10);
   }
 
-  @OneToOne(() => CompanyEntity, (company) => company.id, {
+  ///////////////////////////////// Relations /////////////////////////////////
+
+  @OneToOne(() => CompanyEntity, (company) => company.owner, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'myCompanyId' })
   myCompany: CompanyEntity;
 
   @ManyToOne(() => RolesEntity, (role) => role.id)
-  @JoinColumn()
+  @JoinColumn({ name: 'roleId' })
   role: RolesEntity;
 
   @ManyToMany(() => CompanyEntity, (company) => company.id, {

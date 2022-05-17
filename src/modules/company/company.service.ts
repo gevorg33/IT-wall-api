@@ -16,7 +16,7 @@ export class CompanyService {
   ): Promise<CompanyEntity> {
     const newCompany = new CompanyEntity();
     Object.assign(newCompany, createCompanyDto);
-    return await this.companyRepository.save(newCompany);
+    return this.companyRepository.save(newCompany);
   }
 
   findById(id: number): Promise<CompanyEntity> {
@@ -29,6 +29,6 @@ export class CompanyService {
   // ): Promise<UserEntity> {
   //   const company = await this.findById(companyId);
   //   Object.assign(company, updateCompanyDto);
-  //   return await this.companyRepository.save(company);
+  //   return this.companyRepository.save(company);
   // }
 }

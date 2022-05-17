@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CompanyController } from './company.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthGuard } from '../user/guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { CompanyEntity } from './company.entity';
 import { CompanyService } from './company.service';
 

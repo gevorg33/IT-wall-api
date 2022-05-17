@@ -6,11 +6,12 @@ import {
   IsString,
   MinLength,
   Length,
+  IsInt,
 } from 'class-validator';
-import { Match } from '../../decorators/match.decorator';
+import { Match } from '../../../decorators/match.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserRoles } from '../../constanst/main-enums';
 import { CreateCompanyDto } from '../../company/dto/create.company.dto';
+import { Type } from 'class-transformer';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -77,8 +78,10 @@ export class CreateUserDto {
   confirmPassword: string;
 
   @IsNotEmpty()
-  @ApiProperty({ example: UserRoles.COMPANY })
-  role: UserRoles;
+  @IsInt()
+  @Type(() => Number)
+  @ApiProperty({ example: 2 })
+  roleId: number;
 
   @ApiProperty()
   company?: CreateCompanyDto;

@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from '@nestjs/common';
-import { UserEntity } from '../user.entity';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
