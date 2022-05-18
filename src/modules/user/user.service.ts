@@ -5,11 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import { JWT_SECRET } from '../../config';
-import { UserResponseInterface } from './types/userResponse.interface';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserRoles } from '../../common/constants/role/user-roles';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
+import { UserTokenResponseType } from './types/user-token.type';
 
 @Injectable()
 export class UserService {
@@ -88,12 +88,14 @@ export class UserService {
     );
   }
 
-  buildUserResponse(user: UserEntity): UserResponseInterface {
-    return {
-      user: {
-        ...user,
-        token: this.generateJwt(user),
-      },
-    };
+  buildUserResponse(user: UserEntity): UserTokenResponseType {
+    user['token'] = this.generateJwt(user);
+    return { user };
+    // return {
+    //   user: {
+    //     ...user,
+    //     // token: this.generateJwt(user),
+    //   },
+    // };
   }
 }

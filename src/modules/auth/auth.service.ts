@@ -1,20 +1,20 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/createUser.dto';
-import { UserResponseInterface } from '../user/types/userResponse.interface';
 import { compare } from 'bcrypt';
 import { LoginUserDto } from '../user/dto/login.dto';
+import { UserTokenResponseType } from '../user/types/user-token.type';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly userService: UserService) {}
 
-  async signup(data: CreateUserDto): Promise<UserResponseInterface> {
+  async signup(data: CreateUserDto): Promise<UserTokenResponseType> {
     const createdUser = await this.userService.createUser(data);
     return this.userService.buildUserResponse(createdUser);
   }
 
-  async login(data: LoginUserDto): Promise<UserResponseInterface> {
+  async login(data: LoginUserDto): Promise<UserTokenResponseType> {
     const user = await this.userService.getByEmail(data.email, true);
 
     if (!user) {

@@ -12,9 +12,14 @@ import { hash } from 'bcrypt';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
+import { Exclude, instanceToPlain } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
+  toJSON() {
+    return instanceToPlain(this);
+  }
+
   @Column()
   firstName: string;
 
@@ -28,6 +33,7 @@ export class UserEntity extends AbstractEntity {
   phoneNumber: string;
 
   @Column({ select: false })
+  @Exclude()
   password: string;
 
   @Column({ nullable: true })
@@ -38,6 +44,7 @@ export class UserEntity extends AbstractEntity {
 
   ///////////////////////////////// Triggers /////////////////////////////////
 
+  @Exclude()
   @BeforeInsert()
   async hashPassword() {
     this.password = await hash(this.password, 10);

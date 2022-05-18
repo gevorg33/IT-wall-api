@@ -83,6 +83,6 @@ export class CreateUserDto {
   @ApiProperty({ example: 2 })
   roleId: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   company?: CreateCompanyDto;
 }
