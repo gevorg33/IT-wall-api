@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserType } from './user.type';
-import { RoleDto } from '../../roles/types/role.dto';
+import { RoleType } from '../../roles/types/role.type';
 
 export class UserTokenType extends UserType {
-  @ApiProperty({ type: RoleDto })
-  role: RoleDto;
+  @ApiProperty({ type: RoleType })
+  role: RoleType;
 
   @ApiProperty({ example: 'iuh378ed378hq9ad1n83...' })
   token?: string;

@@ -5,18 +5,20 @@ import { UserEntity } from './user.entity';
 import { AuthGuard } from '../../guards/auth.guard';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserTokenResponseType } from './types/user-token.type';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { UserResponseType } from './types/user-response.type';
 
-@Controller()
+@Controller('users')
 @ApiTags('User')
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/me')
   @ApiOperation({ summary: 'Authentication' })
   @UseGuards(AuthGuard)
-  async currentUser(@User() user: UserEntity): Promise<UserTokenResponseType> {
-    return this.userService.buildUserResponse(user);
+  async currentUser(@User() user: UserEntity): Promise<UserEntity> {
+    return user;
   }
 
   @Put('/me')
@@ -25,8 +27,8 @@ export class UserController {
   async updateCurrentUser(
     @User() user: UserEntity,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<UserTokenResponseType> {
+  ): Promise<UserResponseType> {
     user = await this.userService.updateUser(user, updateUserDto);
-    return this.userService.buildUserResponse(user);
+    return { user };
   }
 }

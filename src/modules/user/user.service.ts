@@ -3,13 +3,10 @@ import { CreateUserDto } from './dto/createUser.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { sign } from 'jsonwebtoken';
-import { JWT_SECRET } from '../../config';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserRoles } from '../../common/constants/role/user-roles';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
-import { UserTokenResponseType } from './types/user-token.type';
 
 @Injectable()
 export class UserService {
@@ -76,26 +73,5 @@ export class UserService {
   ): Promise<UserEntity> {
     Object.assign(user, updateUserDto);
     return this.userRepository.save(user);
-  }
-
-  generateJwt(user: UserEntity): string {
-    return sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
-      JWT_SECRET,
-    );
-  }
-
-  buildUserResponse(user: UserEntity): UserTokenResponseType {
-    user['token'] = this.generateJwt(user);
-    return { user };
-    // return {
-    //   user: {
-    //     ...user,
-    //     // token: this.generateJwt(user),
-    //   },
-    // };
   }
 }

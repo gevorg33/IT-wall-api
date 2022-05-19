@@ -1,14 +1,14 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
-import { AuthMiddleware } from './middlewares/auth.middleware';
 import { OrmConfig } from '../ormconfig';
 import { CompanyModule } from './modules/company/company.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './utils/http-exception-filter';
 import { AuthModule } from './modules/auth/auth.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { AuthModule } from './modules/auth/auth.module';
       ...OrmConfig,
       autoLoadEntities: true,
     }),
+    SharedModule,
     AuthModule,
     UserModule,
     CompanyModule,
@@ -30,10 +31,10 @@ import { AuthModule } from './modules/auth/auth.module';
   ],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({
-      path: '*',
-      method: RequestMethod.ALL,
-    });
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(AuthMiddleware).forRoutes({
+  //     path: '*',
+  //     method: RequestMethod.ALL,
+  //   });
+  // }
 }
