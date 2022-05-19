@@ -20,7 +20,7 @@ export class CreateCompanyDto {
   @Length(2, 50)
   @ApiProperty({
     example: 3,
-    description: 'Industry Id',
+    description: 'Tax Number',
   })
   taxNumber: number;
 }

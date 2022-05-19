@@ -19,6 +19,7 @@ export class AuthController {
 
   @Post('/login')
   @ApiOperation({ summary: 'Authentication' })
+  @ApiOkResponse({ type: UserTokenResponseType })
   async login(@Body() data: LoginUserDto): Promise<UserTokenResponseType> {
     return this.authService.login(data);
   }

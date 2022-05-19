@@ -13,6 +13,7 @@ import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -21,25 +22,32 @@ export class UserEntity extends AbstractEntity {
   }
 
   @Column()
+  @ApiProperty()
   firstName: string;
 
   @Column()
+  @ApiProperty()
   lastName: string;
 
   @Column()
+  @ApiProperty()
   email: string;
 
   @Column()
+  @ApiProperty()
   phoneNumber: string;
 
   @Column({ select: false })
   @Exclude()
+  @ApiProperty()
   password: string;
 
   @Column({ nullable: true })
+  @ApiProperty({ example: '14' })
   myCompanyId: number;
 
   @Column()
+  @ApiProperty({ example: '2' })
   roleId: number;
 
   ///////////////////////////////// Triggers /////////////////////////////////

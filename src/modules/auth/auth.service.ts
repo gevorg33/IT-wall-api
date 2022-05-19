@@ -16,8 +16,11 @@ export class AuthService {
 
   async signup(data: CreateUserDto): Promise<UserTokenResponseType> {
     const createdUser = await this.userService.createUser(data);
+    const userWithCompany = await this.userService.getUserWithCompany(
+      createdUser.id,
+    );
 
-    return this.getUserTokenResponse(createdUser);
+    return this.getUserTokenResponse(userWithCompany);
   }
 
   async login(data: LoginUserDto): Promise<UserTokenResponseType> {
@@ -28,8 +31,12 @@ export class AuthService {
   }
 
   async getUserTokenResponse(user: UserEntity): Promise<UserTokenResponseType> {
-    user['access_token'] = this.generateJwt(user);
-    return { user };
+    return {
+      user: {
+        ...user,
+        accessToken: (user['accessToken'] = this.generateJwt(user)),
+      },
+    };
   }
 
   async validateUser(email: string, password: string): Promise<UserEntity> {
