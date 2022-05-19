@@ -6,7 +6,7 @@ import { AuthGuard } from '../../guards/auth.guard';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
-import { UserResponseType } from './types/user-response.type';
+import { UserResponseType } from './types/user.type';
 
 @Controller('users')
 @ApiTags('User')

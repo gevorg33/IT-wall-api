@@ -14,6 +14,9 @@ import { CompanyEntity } from '../company/company.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { ProfLevelEntity } from '../prof-level/prof-level.entity';
+import { LanguageEntity } from '../language/language.entity';
+import { CountryEntity } from '../country/country.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -21,19 +24,19 @@ export class UserEntity extends AbstractEntity {
     return instanceToPlain(this);
   }
 
-  @Column()
+  @Column({ length: 30 })
   @ApiProperty()
   firstName: string;
 
-  @Column()
+  @Column({ length: 30 })
   @ApiProperty()
   lastName: string;
 
-  @Column()
+  @Column({ length: 100 })
   @ApiProperty()
   email: string;
 
-  @Column()
+  @Column({ length: 20 })
   @ApiProperty()
   phoneNumber: string;
 
@@ -49,6 +52,10 @@ export class UserEntity extends AbstractEntity {
   @Column()
   @ApiProperty({ example: '2' })
   roleId: number;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: '13' })
+  countryId: number;
 
   ///////////////////////////////// Triggers /////////////////////////////////
 
@@ -75,4 +82,16 @@ export class UserEntity extends AbstractEntity {
   })
   @JoinTable()
   companies: CompanyEntity[];
+
+  @ManyToMany(() => ProfLevelEntity)
+  @JoinTable()
+  profLevels: ProfLevelEntity[];
+
+  @ManyToMany(() => LanguageEntity)
+  @JoinTable()
+  languages: LanguageEntity[];
+
+  @ManyToOne(() => CountryEntity)
+  @JoinColumn({ name: 'countryId' })
+  country: CountryEntity;
 }

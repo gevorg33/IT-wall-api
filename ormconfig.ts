@@ -17,7 +17,7 @@ export const OrmConfig: TypeOrmModuleOptions = {
   database: process.env.PG_DB,
   // entities: ['dist/src/modules/**/*.entity.{ts,js}'],
   // migrations: ['dist/src/migrations/*.{ts,js}'],
-  entities: [__dirname + '/src/modules/**/*.entity.{ts,js}'],
+  entities: ['dist/src/modules/**/*.entity.{ts,js}'],
   migrations: [__dirname + '/src/migrations/*.{ts,js}'],
   synchronize: true,
   migrationsRun: true,

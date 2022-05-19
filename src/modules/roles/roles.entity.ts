@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { UserRoles } from '../../common/constants/role/user-roles';
+import { UserRoles } from '../../common/constants/user-roles';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { UserEntity } from '../user/user.entity';
 import { ApiProperty } from '@nestjs/swagger';

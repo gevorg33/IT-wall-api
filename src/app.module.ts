@@ -9,6 +9,9 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './utils/http-exception-filter';
 import { AuthModule } from './modules/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
+import { LanguageModule } from './modules/language/language.module';
+import { CountryModule } from './modules/country/country.module';
+import { ProfLevelModule } from './modules/prof-level/prof-level.module';
 
 @Module({
   imports: [
@@ -20,6 +23,9 @@ import { SharedModule } from './shared/shared.module';
     AuthModule,
     UserModule,
     CompanyModule,
+    LanguageModule,
+    CountryModule,
+    ProfLevelModule,
   ],
   controllers: [AppController],
   providers: [

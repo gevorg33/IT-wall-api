@@ -16,3 +16,8 @@ export class UserType {
   @ApiProperty({ example: 'example@gmail.com' })
   email: string;
 }
+
+export class UserResponseType {
+  @ApiProperty()
+  user: UserType;
+}

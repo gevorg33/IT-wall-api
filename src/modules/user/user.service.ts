@@ -4,7 +4,7 @@ import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { UserRoles } from '../../common/constants/role/user-roles';
+import { UserRoles } from '../../common/constants/user-roles';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
 
