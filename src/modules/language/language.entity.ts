@@ -1,7 +1,7 @@
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserEntity } from '../user/user.entity';
+import { UserLanguageEntity } from '../user-language/user-language.entity';
 
 @Entity({ name: 'languages' })
 export class LanguageEntity extends AbstractEntity {
@@ -15,6 +15,9 @@ export class LanguageEntity extends AbstractEntity {
 
   ///////////////////////////////// Relations /////////////////////////////////
 
-  @ManyToMany(() => UserEntity)
-  users: UserEntity[];
+  // @ManyToMany(() => UserEntity, (user) => user.languages)
+  // users: UserEntity[];
+
+  @OneToMany(() => UserLanguageEntity, (userLanguage) => userLanguage.language)
+  userLanguages: UserLanguageEntity[];
 }

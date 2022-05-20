@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
 } from 'typeorm';
 import { hash } from 'bcrypt';
@@ -13,10 +14,9 @@ import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { ProfLevelEntity } from '../prof-level/prof-level.entity';
-import { LanguageEntity } from '../language/language.entity';
 import { CountryEntity } from '../country/country.entity';
 import { compare } from 'bcrypt';
+import { UserLanguageEntity } from '../user-language/user-language.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -81,33 +81,22 @@ export class UserEntity extends AbstractEntity {
   @JoinTable()
   companies: CompanyEntity[];
 
-  @ManyToMany(() => ProfLevelEntity)
-  @JoinTable({
-    name: 'users_prof_levels',
-    joinColumn: {
-      name: 'userId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'profLevelId',
-      referencedColumnName: 'id',
-    },
-  })
-  profLevels: ProfLevelEntity[];
+  // @ManyToMany(() => LanguageEntity, (language) => language.users)
+  // @JoinTable({
+  //   name: 'users_languages',
+  //   joinColumn: {
+  //     name: 'userId',
+  //     referencedColumnName: 'id',
+  //   },
+  //   inverseJoinColumn: {
+  //     name: 'languageId',
+  //     referencedColumnName: 'id',
+  //   },
+  // })
+  // languages: LanguageEntity[];
 
-  @ManyToMany(() => LanguageEntity)
-  @JoinTable({
-    name: 'users_languages',
-    joinColumn: {
-      name: 'userId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'languageId',
-      referencedColumnName: 'id',
-    },
-  })
-  languages: LanguageEntity[];
+  @OneToMany(() => UserLanguageEntity, (userLanguage) => userLanguage.user)
+  userLanguages: UserLanguageEntity[];
 
   @ManyToOne(() => CountryEntity)
   @JoinColumn({ name: 'countryId' })

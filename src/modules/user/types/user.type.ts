@@ -1,8 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { RoleType } from '../../roles/types/role.type';
-import { LanguageType } from '../../language/types/language.type';
-import { ProfLevelType } from '../../prof-level/types/prof-level.type';
 import { CompanyType } from '../../company/types/company.type';
+import { UserLanguageType } from '../../user-language/types/user-language.type';
 
 export class UserType {
   @ApiProperty({ example: 23 })
@@ -29,11 +28,8 @@ export class UserType {
   @ApiPropertyOptional()
   myCompany?: CompanyType;
 
-  @ApiPropertyOptional({ type: LanguageType, isArray: true })
-  languages?: LanguageType[];
-
-  @ApiPropertyOptional({ type: ProfLevelType, isArray: true })
-  profLevels?: ProfLevelType[];
+  @ApiPropertyOptional({ type: UserLanguageType, isArray: true })
+  languages?: UserLanguageType[];
 }
 
 export class UserResponseType {

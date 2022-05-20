@@ -57,16 +57,16 @@ export class UserService {
       .where('user.id = :id', { id })
       .leftJoinAndSelect('user.myCompany', 'myCompany')
       .leftJoinAndSelect('user.country', 'country')
-      .leftJoinAndSelect('user.languages', 'languages')
-      .leftJoinAndSelect('user.profLevels', 'profLevels')
+      .leftJoinAndSelect('user.userLanguages', 'languages')
+      .leftJoinAndSelect('languages.language', 'language')
       .select([
         'user',
         'myCompany',
         'country.name',
         'country.code',
-        'languages.name',
-        'languages.code',
-        'profLevels.name',
+        'languages.level',
+        'language.name',
+        'language.code',
       ])
       .getOne();
   }

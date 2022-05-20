@@ -11,7 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { LanguageModule } from './modules/language/language.module';
 import { CountryModule } from './modules/country/country.module';
-import { ProfLevelModule } from './modules/prof-level/prof-level.module';
+import { UserLanguageModule } from './modules/user-language/user-language.module';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { ProfLevelModule } from './modules/prof-level/prof-level.module';
     CompanyModule,
     LanguageModule,
     CountryModule,
-    ProfLevelModule,
+    UserLanguageModule,
   ],
   controllers: [AppController],
   providers: [

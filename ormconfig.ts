@@ -25,6 +25,7 @@ export const OrmConfig: TypeOrmModuleOptions = {
     entitiesDir: 'src/modules/**/*.entity.{ts,js}',
     migrationsDir: 'src/migrations',
   },
+  logging: true,
 };
 
 export default OrmConfig;

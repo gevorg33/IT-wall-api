@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LanguageEntity } from './language.entity';
+import { LanguageLevels } from '../../common/constants/prof-levels';
+import { LanguageLevelType } from '../user-language/types/language-levels-list.type';
 
 @Injectable()
 export class LanguageService {
@@ -14,6 +16,12 @@ export class LanguageService {
     return this.languageRepository.find({
       order: { name: 'ASC' },
       select: ['id', 'name', 'code'],
+    });
+  }
+
+  async getLanguageLevelsList(): Promise<LanguageLevelType[]> {
+    return Object.values(LanguageLevels).map((level) => {
+      return { level };
     });
   }
 }
