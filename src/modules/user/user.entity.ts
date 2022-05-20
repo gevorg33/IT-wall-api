@@ -60,7 +60,6 @@ export class UserEntity extends AbstractEntity {
   }
 
   async comparePassword(attempt: string): Promise<boolean> {
-    console.log(attempt, this.password);
     return await compare(attempt, this.password);
   }
 
