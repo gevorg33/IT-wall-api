@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/createUser.dto';
 import { LoginUserDto } from '../user/dto/login.dto';
@@ -43,13 +43,13 @@ export class AuthService {
     const user: UserEntity = await this.userService.getByEmail(email, true);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new BadRequestException('Credentials are not valid');
     }
 
     const isPasswordCorrect = await user.comparePassword(password);
 
     if (!isPasswordCorrect) {
-      throw new UnauthorizedException();
+      throw new BadRequestException('Credentials are not valid');
     }
 
     return user;

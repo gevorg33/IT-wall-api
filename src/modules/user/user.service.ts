@@ -42,7 +42,9 @@ export class UserService {
   }
 
   async getByEmail(email: string, getPassword = false): Promise<UserEntity> {
-    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+    const queryBuilder = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email });
     if (getPassword) {
       await queryBuilder.addSelect('user.password');
     }
