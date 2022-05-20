@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { LanguageModule } from './modules/language/language.module';
 import { CountryModule } from './modules/country/country.module';
 import { UserLanguageModule } from './modules/user-language/user-language.module';
+import { RegionModule } from './modules/region/region.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UserLanguageModule } from './modules/user-language/user-language.module
     LanguageModule,
     CountryModule,
     UserLanguageModule,
+    RegionModule,
   ],
   controllers: [AppController],
   providers: [
