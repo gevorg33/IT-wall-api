@@ -12,18 +12,14 @@ import { hash } from 'bcrypt';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
-import { Exclude, instanceToPlain } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProfLevelEntity } from '../prof-level/prof-level.entity';
 import { LanguageEntity } from '../language/language.entity';
 import { CountryEntity } from '../country/country.entity';
+import { compare } from 'bcrypt';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
-  toJSON() {
-    return instanceToPlain(this);
-  }
-
   @Column({ length: 30 })
   @ApiProperty()
   firstName: string;
@@ -41,7 +37,6 @@ export class UserEntity extends AbstractEntity {
   phoneNumber: string;
 
   @Column({ select: false })
-  @Exclude()
   @ApiProperty()
   password: string;
 
@@ -59,10 +54,14 @@ export class UserEntity extends AbstractEntity {
 
   ///////////////////////////////// Triggers /////////////////////////////////
 
-  @Exclude()
   @BeforeInsert()
   async hashPassword() {
     this.password = await hash(this.password, 10);
+  }
+
+  async comparePassword(attempt: string): Promise<boolean> {
+    console.log(attempt, this.password);
+    return await compare(attempt, this.password);
   }
 
   ///////////////////////////////// Relations /////////////////////////////////

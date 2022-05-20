@@ -7,6 +7,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserRoles } from '../../common/constants/user-roles';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
+import { UserType } from './types/user.type';
 
 @Injectable()
 export class UserService {
@@ -40,19 +41,32 @@ export class UserService {
     return this.userRepository.save(newUser);
   }
 
-  async getByEmail(email: string, getPassword = false) {
-    const select: (keyof UserEntity)[] = [
-      'id',
-      'firstName',
-      'lastName',
-      'email',
-      'phoneNumber',
-    ];
-    getPassword && select.push('password');
-    return this.userRepository.findOne({
-      where: { email },
-      select: select,
-    });
+  async getByEmail(email: string, getPassword = false): Promise<UserEntity> {
+    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+    if (getPassword) {
+      await queryBuilder.addSelect('user.password');
+    }
+    return queryBuilder.getOne();
+  }
+
+  async getUserFullData(id: number): Promise<UserType> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .leftJoinAndSelect('user.myCompany', 'myCompany')
+      .leftJoinAndSelect('user.country', 'country')
+      .leftJoinAndSelect('user.languages', 'languages')
+      .leftJoinAndSelect('user.profLevels', 'profLevels')
+      .select([
+        'user',
+        'myCompany',
+        'country.name',
+        'country.code',
+        'languages.name',
+        'languages.code',
+        'profLevels.name',
+      ])
+      .getOne();
   }
 
   async getUserWithCompany(id: number) {
