@@ -84,11 +84,31 @@ export class UserEntity extends AbstractEntity {
   companies: CompanyEntity[];
 
   @ManyToMany(() => ProfLevelEntity)
-  @JoinTable()
+  @JoinTable({
+    name: 'users_prof_levels',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'profLevelId',
+      referencedColumnName: 'id',
+    },
+  })
   profLevels: ProfLevelEntity[];
 
   @ManyToMany(() => LanguageEntity)
-  @JoinTable()
+  @JoinTable({
+    name: 'users_languages',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'languageId',
+      referencedColumnName: 'id',
+    },
+  })
   languages: LanguageEntity[];
 
   @ManyToOne(() => CountryEntity)
