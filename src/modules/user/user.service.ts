@@ -59,6 +59,8 @@ export class UserService {
       .leftJoinAndSelect('user.country', 'country')
       .leftJoinAndSelect('user.userLanguages', 'languages')
       .leftJoinAndSelect('languages.language', 'language')
+      .leftJoinAndSelect('user.profession', 'profession')
+      .leftJoinAndSelect('user.skills', 'skills')
       .select([
         'user',
         'myCompany',
@@ -67,6 +69,8 @@ export class UserService {
         'languages.level',
         'language.name',
         'language.code',
+        'skills',
+        'profession.name'
       ])
       .getOne();
   }
