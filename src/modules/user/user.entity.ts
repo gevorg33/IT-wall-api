@@ -17,6 +17,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CountryEntity } from '../country/country.entity';
 import { compare } from 'bcrypt';
 import { UserLanguageEntity } from '../user-language/user-language.entity';
+import { ProfessionEntity } from "../profession/profession.entity";
+import { SkillsEntity } from "../skills/skills.entity";
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -81,6 +83,12 @@ export class UserEntity extends AbstractEntity {
   @JoinTable()
   companies: CompanyEntity[];
 
+  @ManyToMany(() => SkillsEntity, (skill) => skill.id, {
+    onDelete: 'CASCADE',
+  })
+  @JoinTable()
+  skills: SkillsEntity[];
+
   // @ManyToMany(() => LanguageEntity, (language) => language.users)
   // @JoinTable({
   //   name: 'users_languages',
@@ -101,4 +109,8 @@ export class UserEntity extends AbstractEntity {
   @ManyToOne(() => CountryEntity)
   @JoinColumn({ name: 'countryId' })
   country: CountryEntity;
+
+  @ManyToOne(() => ProfessionEntity)
+  @JoinColumn({ name: 'professionId' })
+  profession: ProfessionEntity;
 }

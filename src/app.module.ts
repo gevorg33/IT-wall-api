@@ -13,6 +13,8 @@ import { LanguageModule } from './modules/language/language.module';
 import { CountryModule } from './modules/country/country.module';
 import { UserLanguageModule } from './modules/user-language/user-language.module';
 import { RegionModule } from './modules/region/region.module';
+import { ProfessionModule } from './modules/profession/profession.module';
+import { SkillsModule } from "./modules/skills/skills.module";
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { RegionModule } from './modules/region/region.module';
     CountryModule,
     UserLanguageModule,
     RegionModule,
+    ProfessionModule,
+    SkillsModule,
   ],
   controllers: [AppController],
   providers: [
