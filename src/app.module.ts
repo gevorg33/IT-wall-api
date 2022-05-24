@@ -14,7 +14,7 @@ import { CountryModule } from './modules/country/country.module';
 import { UserLanguageModule } from './modules/user-language/user-language.module';
 import { RegionModule } from './modules/region/region.module';
 import { ProfessionModule } from './modules/profession/profession.module';
-import { SkillsModule } from "./modules/skills/skills.module";
+import { SkillsModule } from './modules/skills/skills.module';
 
 @Module({
   imports: [

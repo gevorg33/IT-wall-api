@@ -8,6 +8,7 @@ const result = dotenv.config({ path: dotenv_path });
 if (result.error) {
   /* do nothing */
 }
+
 export const OrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
   host: process.env.PG_HOST,
