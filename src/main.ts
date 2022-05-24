@@ -9,6 +9,8 @@ async function bootstrap() {
 
   app.enableCors();
 
+  const PORT = process.env.PORT || 3000;
+
   app.useGlobalPipes(
     new ValidationPipe({
       // whitelist: true,
@@ -24,8 +26,8 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  await app.listen(3000, (): void => {
-    console.log('Server has been run on port 3000');
+  await app.listen(PORT, (): void => {
+    console.log(`Server has been run on port ${PORT}`);
   });
 }
 void bootstrap();
