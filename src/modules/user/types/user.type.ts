@@ -2,8 +2,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { RoleType } from '../../roles/types/role.type';
 import { CompanyType } from '../../company/types/company.type';
 import { UserLanguageType } from '../../user-language/types/user-language.type';
-import { SkillType } from "../../skills/types/skill.type";
-import { ProfessionType } from "../../profession/types/profession.type";
+import { SkillType } from '../../skill/types/skill.type';
+import { CategoryType } from '../../category/types/category.type';
+import { SpecificationType } from '../../specification/types/specification.type';
 
 export class UserType {
   @ApiProperty({ example: 23 })
@@ -30,11 +31,14 @@ export class UserType {
   @ApiPropertyOptional()
   myCompany?: CompanyType;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: SkillType, isArray: true })
   skills?: SkillType[];
 
   @ApiPropertyOptional()
-  profession?: ProfessionType;
+  category?: CategoryType;
+
+  @ApiPropertyOptional()
+  specification?: SpecificationType;
 
   @ApiPropertyOptional({ type: UserLanguageType, isArray: true })
   languages?: UserLanguageType[];

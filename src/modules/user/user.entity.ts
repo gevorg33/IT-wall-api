@@ -17,8 +17,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CountryEntity } from '../country/country.entity';
 import { compare } from 'bcrypt';
 import { UserLanguageEntity } from '../user-language/user-language.entity';
-import { ProfessionEntity } from "../profession/profession.entity";
-import { SkillsEntity } from "../skills/skills.entity";
+import { CategoryEntity } from '../category/category.entity';
+import { SkillEntity } from '../skill/skill.entity';
+import { SpecificationEntity } from '../specification/specification.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -43,16 +44,24 @@ export class UserEntity extends AbstractEntity {
   password: string;
 
   @Column({ nullable: true })
-  @ApiProperty({ example: '14' })
+  @ApiProperty({ example: 14 })
   myCompanyId: number;
 
   @Column()
-  @ApiProperty({ example: '2' })
+  @ApiProperty({ example: 2 })
   roleId: number;
 
   @Column({ nullable: true })
-  @ApiProperty({ example: '13' })
+  @ApiProperty({ example: 13 })
   countryId: number;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: 15 })
+  categoryId: number;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: 21 })
+  specificationId: number;
 
   ///////////////////////////////// Triggers /////////////////////////////////
 
@@ -83,25 +92,21 @@ export class UserEntity extends AbstractEntity {
   @JoinTable()
   companies: CompanyEntity[];
 
-  @ManyToMany(() => SkillsEntity, (skill) => skill.id, {
+  @ManyToMany(() => SkillEntity, (skill) => skill.users, {
     onDelete: 'CASCADE',
   })
-  @JoinTable()
-  skills: SkillsEntity[];
-
-  // @ManyToMany(() => LanguageEntity, (language) => language.users)
-  // @JoinTable({
-  //   name: 'users_languages',
-  //   joinColumn: {
-  //     name: 'userId',
-  //     referencedColumnName: 'id',
-  //   },
-  //   inverseJoinColumn: {
-  //     name: 'languageId',
-  //     referencedColumnName: 'id',
-  //   },
-  // })
-  // languages: LanguageEntity[];
+  @JoinTable({
+    name: 'users_skills',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'skillId',
+      referencedColumnName: 'id',
+    },
+  })
+  skills: SkillEntity[];
 
   @OneToMany(() => UserLanguageEntity, (userLanguage) => userLanguage.user)
   userLanguages: UserLanguageEntity[];
@@ -110,7 +115,11 @@ export class UserEntity extends AbstractEntity {
   @JoinColumn({ name: 'countryId' })
   country: CountryEntity;
 
-  @ManyToOne(() => ProfessionEntity)
-  @JoinColumn({ name: 'professionId' })
-  profession: ProfessionEntity;
+  @ManyToOne(() => CategoryEntity)
+  @JoinColumn({ name: 'categoryId' })
+  category: CategoryEntity;
+
+  @ManyToOne(() => SpecificationEntity)
+  @JoinColumn({ name: 'specificationId' })
+  specification: SpecificationEntity;
 }

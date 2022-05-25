@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ProfessionType {
+export class CategoryType {
   @ApiProperty({ example: 23 })
   id: number;
 
-  @ApiProperty({ example: 'Graphic designer' })
+  @ApiProperty({ example: 'Graphic design' })
   name: string;
 }

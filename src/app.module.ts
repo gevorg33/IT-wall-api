@@ -13,8 +13,9 @@ import { LanguageModule } from './modules/language/language.module';
 import { CountryModule } from './modules/country/country.module';
 import { UserLanguageModule } from './modules/user-language/user-language.module';
 import { RegionModule } from './modules/region/region.module';
-import { ProfessionModule } from './modules/profession/profession.module';
-import { SkillsModule } from './modules/skills/skills.module';
+import { CategoryModule } from './modules/category/category.module';
+import { SkillModule } from './modules/skill/skill.module';
+import { SpecificationModule } from './modules/specification/specification.module';
 
 @Module({
   imports: [
@@ -30,8 +31,9 @@ import { SkillsModule } from './modules/skills/skills.module';
     CountryModule,
     UserLanguageModule,
     RegionModule,
-    ProfessionModule,
-    SkillsModule,
+    CategoryModule,
+    SkillModule,
+    SpecificationModule,
   ],
   controllers: [AppController],
   providers: [

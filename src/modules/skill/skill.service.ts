@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SkillsEntity } from './skills.entity';
+import { SkillEntity } from './skill.entity';
 import { Repository } from 'typeorm';
 import { SkillType } from './types/skill.type';
 
 @Injectable()
-export class SkillsService {
+export class SkillService {
   constructor(
-    @InjectRepository(SkillsEntity)
-    private readonly skillsRepository: Repository<SkillsEntity>,
+    @InjectRepository(SkillEntity)
+    private readonly skillsRepository: Repository<SkillEntity>,
   ) {}
 
   async getSkillsList(): Promise<SkillType[]> {

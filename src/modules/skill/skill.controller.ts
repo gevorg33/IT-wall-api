@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { SkillsService } from './skills.service';
+import { SkillService } from './skill.service';
 import { SkillsListType } from './types/skills-list.type';
 
 @Controller('skills')
 @ApiTags('Skills')
-export class SkillsController {
-  constructor(private readonly skillsService: SkillsService) {}
+export class SkillController {
+  constructor(private readonly skillsService: SkillService) {}
 
   @Get('/')
   @ApiOperation({ summary: 'Get Skills List' })
