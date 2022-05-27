@@ -26,12 +26,10 @@ export class UserLanguageEntity extends AbstractEntity {
   ///////////////////////////////// Relations /////////////////////////////////
 
   @JoinColumn({ name: 'userId' })
-  @ManyToOne(() => UserEntity, (user) => user.userLanguages, { primary: true })
+  @ManyToOne(() => UserEntity, (user) => user.userLanguages)
   user: UserEntity;
 
   @JoinColumn({ name: 'languageId' })
-  @ManyToOne(() => LanguageEntity, (language) => language.userLanguages, {
-    primary: true,
-  })
+  @ManyToOne(() => LanguageEntity, (language) => language.userLanguages)
   language: LanguageEntity;
 }

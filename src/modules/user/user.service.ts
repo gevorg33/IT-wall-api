@@ -62,6 +62,7 @@ export class UserService {
       .leftJoinAndSelect('user.category', 'category')
       .leftJoinAndSelect('user.specification', 'specification')
       .leftJoinAndSelect('user.skills', 'skills')
+      .leftJoinAndSelect('user.educations', 'educations')
       .select([
         'user',
         'myCompany',
@@ -76,6 +77,14 @@ export class UserService {
         'category.name',
         'specification.id',
         'specification.name',
+        'educations.id',
+        'educations.userId',
+        'educations.institution',
+        'educations.degree',
+        'educations.fieldOfStudy',
+        'educations.startDate',
+        'educations.endDate',
+        'educations.description',
       ])
       .getOne();
   }

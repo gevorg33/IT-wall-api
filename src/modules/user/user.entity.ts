@@ -20,6 +20,7 @@ import { UserLanguageEntity } from '../user-language/user-language.entity';
 import { CategoryEntity } from '../category/category.entity';
 import { SkillEntity } from '../skill/skill.entity';
 import { SpecificationEntity } from '../specification/specification.entity';
+import { EducationEntity } from '../education/education.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -110,6 +111,9 @@ export class UserEntity extends AbstractEntity {
 
   @OneToMany(() => UserLanguageEntity, (userLanguage) => userLanguage.user)
   userLanguages: UserLanguageEntity[];
+
+  @OneToMany(() => EducationEntity, (education) => education.user)
+  educations: EducationEntity[];
 
   @ManyToOne(() => CountryEntity)
   @JoinColumn({ name: 'countryId' })

@@ -5,6 +5,7 @@ import { UserLanguageType } from '../../user-language/types/user-language.type';
 import { SkillType } from '../../skill/types/skill.type';
 import { CategoryType } from '../../category/types/category.type';
 import { SpecificationType } from '../../specification/types/specification.type';
+import { EducationType } from '../../education/types/education.type';
 
 export class UserType {
   @ApiProperty({ example: 23 })
@@ -42,6 +43,9 @@ export class UserType {
 
   @ApiPropertyOptional({ type: UserLanguageType, isArray: true })
   languages?: UserLanguageType[];
+
+  @ApiPropertyOptional({ type: EducationType, isArray: true })
+  educations?: EducationType[];
 }
 
 export class UserResponseType {

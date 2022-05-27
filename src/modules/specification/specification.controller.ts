@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { SpecificationService } from './specification.service';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SpecificationsListType } from './types/specifications-list.type';
 
 @Controller('specifications')
+@ApiTags('Specifications')
 export class SpecificationController {
   constructor(private readonly specificationService: SpecificationService) {}
 
