@@ -6,6 +6,7 @@ import { SkillType } from '../../skill/types/skill.type';
 import { CategoryType } from '../../category/types/category.type';
 import { SpecificationType } from '../../specification/types/specification.type';
 import { EducationType } from '../../education/types/education.type';
+import { WorkExperienceType } from '../../work-experience/types/work-experience.type';
 
 export class UserType {
   @ApiProperty({ example: 23 })
@@ -46,6 +47,9 @@ export class UserType {
 
   @ApiPropertyOptional({ type: EducationType, isArray: true })
   educations?: EducationType[];
+
+  @ApiPropertyOptional({ type: WorkExperienceType, isArray: true })
+  workExperience?: WorkExperienceType[];
 }
 
 export class UserResponseType {

@@ -17,6 +17,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { SkillModule } from './modules/skill/skill.module';
 import { SpecificationModule } from './modules/specification/specification.module';
 import { EducationModule } from './modules/education/education.module';
+import { WorkExperienceModule } from './modules/work-experience/work-experience.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { EducationModule } from './modules/education/education.module';
     SkillModule,
     SpecificationModule,
     EducationModule,
+    WorkExperienceModule,
   ],
   controllers: [AppController],
   providers: [

@@ -21,6 +21,7 @@ import { CategoryEntity } from '../category/category.entity';
 import { SkillEntity } from '../skill/skill.entity';
 import { SpecificationEntity } from '../specification/specification.entity';
 import { EducationEntity } from '../education/education.entity';
+import { WorkExperienceEntity } from '../work-experience/work-experience.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -114,6 +115,9 @@ export class UserEntity extends AbstractEntity {
 
   @OneToMany(() => EducationEntity, (education) => education.user)
   educations: EducationEntity[];
+
+  @OneToMany(() => WorkExperienceEntity, (workExp) => workExp.user)
+  workExperience: WorkExperienceEntity[];
 
   @ManyToOne(() => CountryEntity)
   @JoinColumn({ name: 'countryId' })
