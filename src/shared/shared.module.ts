@@ -1,13 +1,14 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import JwtOptions from '../config/jwt.config';
+import JwtConfigOptions from '../config/jwt.config';
+import { CloudinaryService } from './services/cloudinary.service';
 
-const providers = [];
+const providers = [CloudinaryService];
 
 @Global()
 @Module({
   providers,
-  imports: [JwtModule.register(JwtOptions)],
+  imports: [JwtModule.register(JwtConfigOptions)],
   exports: [...providers, JwtModule],
 })
 export class SharedModule {}

@@ -22,6 +22,9 @@ import { SkillEntity } from '../skill/skill.entity';
 import { SpecificationEntity } from '../specification/specification.entity';
 import { EducationEntity } from '../education/education.entity';
 import { WorkExperienceEntity } from '../work-experience/work-experience.entity';
+import { AvatarEntity } from '../avatar/avatar.entity';
+import { ProjectEntity } from '../project/project.entity';
+import { CertificationEntity } from '../certification/certification.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -115,6 +118,15 @@ export class UserEntity extends AbstractEntity {
 
   @OneToMany(() => EducationEntity, (education) => education.user)
   educations: EducationEntity[];
+
+  @OneToMany(() => ProjectEntity, (project) => project.user)
+  projects: ProjectEntity[];
+
+  @OneToMany(() => CertificationEntity, (cert) => cert.user)
+  certifications: CertificationEntity[];
+
+  @OneToOne(() => AvatarEntity, (avatar) => avatar.user)
+  avatar: AvatarEntity;
 
   @OneToMany(() => WorkExperienceEntity, (workExp) => workExp.user)
   workExperience: WorkExperienceEntity[];

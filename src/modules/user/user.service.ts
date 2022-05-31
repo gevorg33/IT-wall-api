@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUser.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRoles } from '../../common/constants/user-roles';
 import { RolesEntity } from '../roles/roles.entity';
 import { CompanyEntity } from '../company/company.entity';
@@ -63,6 +63,9 @@ export class UserService {
       .leftJoinAndSelect('user.specification', 'specification')
       .leftJoinAndSelect('user.skills', 'skills')
       .leftJoinAndSelect('user.educations', 'educations')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .leftJoinAndSelect('user.projects', 'projects')
+      .leftJoinAndSelect('user.certifications', 'certifications')
       .select([
         'user',
         'myCompany',
@@ -77,14 +80,10 @@ export class UserService {
         'category.name',
         'specification.id',
         'specification.name',
-        'educations.id',
-        'educations.userId',
-        'educations.institution',
-        'educations.degree',
-        'educations.fieldOfStudy',
-        'educations.startDate',
-        'educations.endDate',
-        'educations.description',
+        'educations',
+        'avatar',
+        'projects',
+        'certifications',
       ])
       .getOne();
   }

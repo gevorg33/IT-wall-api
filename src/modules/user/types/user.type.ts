@@ -7,6 +7,8 @@ import { CategoryType } from '../../category/types/category.type';
 import { SpecificationType } from '../../specification/types/specification.type';
 import { EducationType } from '../../education/types/education.type';
 import { WorkExperienceType } from '../../work-experience/types/work-experience.type';
+import { AvatarType } from '../../avatar/types/avatar.type';
+import { ProjectType } from '../../project/types/project.type';
 
 export class UserType {
   @ApiProperty({ example: 23 })
@@ -40,6 +42,9 @@ export class UserType {
   category?: CategoryType;
 
   @ApiPropertyOptional()
+  avatar?: AvatarType;
+
+  @ApiPropertyOptional()
   specification?: SpecificationType;
 
   @ApiPropertyOptional({ type: UserLanguageType, isArray: true })
@@ -47,6 +52,9 @@ export class UserType {
 
   @ApiPropertyOptional({ type: EducationType, isArray: true })
   educations?: EducationType[];
+
+  @ApiPropertyOptional({ type: ProjectType, isArray: true })
+  projects?: ProjectType[];
 
   @ApiPropertyOptional({ type: WorkExperienceType, isArray: true })
   workExperience?: WorkExperienceType[];

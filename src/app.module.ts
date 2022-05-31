@@ -18,9 +18,18 @@ import { SkillModule } from './modules/skill/skill.module';
 import { SpecificationModule } from './modules/specification/specification.module';
 import { EducationModule } from './modules/education/education.module';
 import { WorkExperienceModule } from './modules/work-experience/work-experience.module';
+import { AvatarModule } from './modules/avatar/avatar.module';
+import { UploadModule } from './modules/upload/upload.module';
+import { ConfigModule } from '@nestjs/config';
+import { ProjectModule } from './modules/project/project.module';
+import { AttachmentModule } from './modules/attachment/attachment.module';
+import { CertificationModule } from './modules/certification/certification.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       ...OrmConfig,
       autoLoadEntities: true,
@@ -38,6 +47,11 @@ import { WorkExperienceModule } from './modules/work-experience/work-experience.
     SpecificationModule,
     EducationModule,
     WorkExperienceModule,
+    AvatarModule,
+    UploadModule,
+    ProjectModule,
+    AttachmentModule,
+    CertificationModule,
   ],
   controllers: [AppController],
   providers: [

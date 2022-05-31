@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { CreateUserDto } from '../user/dto/createUser.dto';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginUserDto } from '../user/dto/login.dto';
 import { UserTokenResponseType } from '../user/types/user-token.type';
 import { UserEntity } from '../user/user.entity';

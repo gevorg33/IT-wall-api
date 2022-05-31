@@ -25,3 +25,8 @@ export class EducationType {
   @ApiProperty({ example: 'Any Description Here...' })
   description: string;
 }
+
+export class EducationResponseType {
+  @ApiProperty()
+  education: EducationType;
+}

@@ -9,7 +9,11 @@ export class WorkExperienceEntity extends AbstractEntity {
   @ApiProperty({ example: 23 })
   userId: number;
 
-  @Column({ length: 120 })
+  @Column({ length: 100 })
+  @ApiProperty({ example: 'Frontend Developer' })
+  title: string;
+
+  @Column({ length: 100 })
   @ApiProperty({ example: 'Armenian National Bank' })
   companyName: string;
 
@@ -18,10 +22,6 @@ export class WorkExperienceEntity extends AbstractEntity {
   industry: string;
 
   @Column({ length: 100 })
-  @ApiProperty({ example: 'Frontend Developer' })
-  title: string;
-
-  @Column({ length: 150 })
   @ApiProperty({ example: 'Yerevan, Armenia' })
   location: string;
 

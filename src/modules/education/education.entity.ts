@@ -9,7 +9,7 @@ export class EducationEntity extends AbstractEntity {
   @ApiProperty({ example: 23 })
   userId: number;
 
-  @Column({ length: 150 })
+  @Column({ length: 100 })
   @ApiProperty({ example: 'National University Of Armenia' })
   institution: string;
 

@@ -28,6 +28,6 @@ export class RolesGuard implements CanActivate {
     // } else if (user instanceof Payee && roles.includes('Payee')) {
     //   return true;
     // }
-    throw new ForbiddenException('Not Permitted, You have no access');
+    throw new ForbiddenException('You have no access');
   }
 }

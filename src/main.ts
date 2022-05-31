@@ -3,8 +3,11 @@ import { AppModule } from './app.module';
 import { setupSwagger } from './swagger/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './utils/http-exception-filter';
+import { patchSelectQueryBuilder } from 'typeorm-scope';
 
 async function bootstrap() {
+  patchSelectQueryBuilder();
+
   const app = await NestFactory.create(AppModule);
 
   app.enableCors();

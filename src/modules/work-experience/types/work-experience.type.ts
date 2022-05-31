@@ -28,3 +28,8 @@ export class WorkExperienceType {
   @ApiProperty({ example: 'Any Description Here...' })
   description: string;
 }
+
+export class WorkExperienceResponseType {
+  @ApiProperty()
+  workExperience: WorkExperienceType;
+}
