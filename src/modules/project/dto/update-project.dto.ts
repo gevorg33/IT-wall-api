@@ -29,6 +29,10 @@ export class UpdateProjectDto {
   description: string;
 
   @IsOptional()
+  @ApiPropertyOptional({ description: 'Array Of Files' })
+  files: Array<Express.Multer.File>;
+
+  @IsOptional()
   @IsJSON()
   @ApiPropertyOptional({
     example: '[45, 47]',

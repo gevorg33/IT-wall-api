@@ -32,7 +32,7 @@ export class UpdateCertificationDto {
   @IsNotEmpty()
   @Length(0, 60)
   @IsString()
-  @ApiPropertyOptional({
+  @ApiProperty({
     example: 'Beginner',
     minLength: 0,
     maxLength: 60,
@@ -43,6 +43,10 @@ export class UpdateCertificationDto {
   @IsDateString()
   @ApiProperty({ example: 'Date...' })
   issued: Date;
+
+  @IsOptional()
+  @ApiPropertyOptional({ description: 'Array Of Files' })
+  files: Array<Express.Multer.File>;
 
   @IsOptional()
   @IsJSON()

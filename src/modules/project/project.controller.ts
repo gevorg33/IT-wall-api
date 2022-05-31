@@ -10,7 +10,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -19,6 +24,7 @@ import { UserEntity } from '../user/user.entity';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { ProjectResponseType } from './types/project.type';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { ProjectSize } from '../../utils/file-validation';
 
 @Controller('projects')
 @ApiTags('Project')
@@ -27,9 +33,14 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Post('/')
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Create Project' })
   @ApiOkResponse({ type: ProjectResponseType })
-  @UseInterceptors(FilesInterceptor('files', 6))
+  @UseInterceptors(
+    FilesInterceptor('files', 6, {
+      limits: { fileSize: ProjectSize },
+    }),
+  )
   async create(
     @User() me: UserEntity,
     @UploadedFiles() files: Array<Express.Multer.File>,
@@ -48,6 +59,7 @@ export class ProjectController {
   }
 
   @Patch('/:id')
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Update Project' })
   @ApiOkResponse({ type: ProjectResponseType })
   @UseInterceptors(FilesInterceptor('files', 6))
@@ -64,10 +76,8 @@ export class ProjectController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Delete Project' })
   @ApiOkResponse({ type: ProjectResponseType })
-  @UseInterceptors(FilesInterceptor('files', 6))
   async delete(
     @User() me: UserEntity,
-    @UploadedFiles() files: Array<Express.Multer.File>,
     @Param('id') id: number,
   ): Promise<ProjectResponseType> {
     const project = await this.projectService.delete(id, me);

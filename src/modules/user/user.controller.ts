@@ -3,22 +3,31 @@ import {
   Controller,
   Get,
   UseGuards,
-  Put,
   Param,
   Post,
   UseInterceptors,
   UploadedFile,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../../decorators/user.decorator';
 import { UserEntity } from './user.entity';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { UserResponseType } from './types/user.type';
 import { AvatarService } from '../avatar/avatar.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { imageFileFilter } from '../../utils/file-filters';
+import { AvatarSize, imageFileFilter } from '../../utils/file-validation';
+import { AvatarDto } from '../avatar/dto/avatar.dto';
+import { UpdateUserAboutDto } from './dto/update-user-about.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 @ApiTags('User')
@@ -30,7 +39,7 @@ export class UserController {
   ) {}
 
   @Get('/me')
-  @ApiOperation({ summary: 'Authentication' })
+  @ApiOperation({ summary: 'Get Me' })
   @ApiOkResponse({ type: UserResponseType })
   async currentUser(@User() me: UserEntity): Promise<UserResponseType> {
     const user = await this.userService.getUserFullData(me.id);
@@ -46,31 +55,53 @@ export class UserController {
   }
 
   @Post('/me/avatar')
-  @ApiOperation({ summary: 'Authentication' })
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Add Avatar' })
   @ApiOkResponse({ type: UserResponseType })
   @UseInterceptors(
     FileInterceptor('avatar', {
       fileFilter: imageFileFilter,
+      limits: { fileSize: AvatarSize },
     }),
   )
+  @ApiBody({ type: AvatarDto })
   async setAvatar(
     @User() me: UserEntity,
     @UploadedFile() img: Express.Multer.File,
   ): Promise<UserResponseType> {
-    const avatar = await this.avatarService.setAvatar(me.id, img);
-    console.log(avatar);
+    await this.avatarService.addAvatar(me.id, img);
     const user = await this.userService.getUserFullData(me.id);
     return { user };
   }
 
-  @Put('/me')
-  @ApiOperation({ summary: 'Authentication' })
+  @Delete('/me/avatar')
+  @ApiOperation({ summary: 'Delete Avatar' })
   @ApiOkResponse({ type: UserResponseType })
-  async updateCurrentUser(
-    @User() user: UserEntity,
-    @Body() updateUserDto: UpdateUserDto,
+  async deleteAvatar(@User() me: UserEntity): Promise<UserResponseType> {
+    await this.avatarService.deleteAvatar(me.id);
+    const user = await this.userService.getUserFullData(me.id);
+    return { user };
+  }
+
+  @Patch('/me/about')
+  @ApiOperation({ summary: 'Update Me About Case' })
+  @ApiOkResponse({ type: UserResponseType })
+  async updateMeAbout(
+    @User() me: UserEntity,
+    @Body() data: UpdateUserAboutDto,
   ): Promise<UserResponseType> {
-    user = await this.userService.updateUser(user, updateUserDto);
+    const user = await this.userService.updateMeAbout(me, data);
+    return { user };
+  }
+
+  @Patch('/me')
+  @ApiOperation({ summary: 'Update Me' })
+  @ApiOkResponse({ type: UserResponseType })
+  async updateMe(
+    @User() me: UserEntity,
+    @Body() data: UpdateUserDto,
+  ): Promise<UserResponseType> {
+    const user = await this.userService.updateMe(me, data);
     return { user };
   }
 }

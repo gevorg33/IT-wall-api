@@ -42,4 +42,8 @@ export class CreateCertificationDto {
   @IsDateString()
   @ApiProperty({ example: 'Date...' })
   issued: Date;
+
+  @IsOptional()
+  @ApiPropertyOptional({ description: 'Array Of Files' })
+  files: Array<Express.Multer.File>;
 }

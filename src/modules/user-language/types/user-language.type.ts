@@ -9,3 +9,8 @@ export class UserLanguageType {
   @ApiProperty({ type: LanguageType })
   language: LanguageType;
 }
+
+export class UserLanguageResponseType {
+  @ApiProperty()
+  userLanguage: UserLanguageType;
+}

@@ -68,6 +68,10 @@ export class UserEntity extends AbstractEntity {
   @ApiProperty({ example: 21 })
   specificationId: number;
 
+  @Column({ type: 'text', nullable: true })
+  @ApiProperty({ example: 'About User...' })
+  about: string;
+
   ///////////////////////////////// Triggers /////////////////////////////////
 
   @BeforeInsert()

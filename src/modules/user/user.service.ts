@@ -3,11 +3,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRoles } from '../../common/constants/user-roles';
 import { RoleEntity } from '../role/role.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { UserType } from './types/user.type';
+import { UpdateUserAboutDto } from './dto/update-user-about.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -100,11 +101,28 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
-  async updateUser(
+  async updateMe(
     user: UserEntity,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UserEntity> {
-    Object.assign(user, updateUserDto);
-    return this.userRepository.save(user);
+    { firstName, lastName, phoneNumber }: UpdateUserDto,
+  ): Promise<UserType> {
+    await this.userRepository.update(user.id, {
+      firstName,
+      lastName,
+      phoneNumber,
+    });
+    return this.getUserFullData(user.id);
+  }
+
+  async updateMeAbout(
+    user: UserEntity,
+    { about, categoryId, specificationId, countryId }: UpdateUserAboutDto,
+  ): Promise<UserType> {
+    await this.userRepository.update(user.id, {
+      about,
+      categoryId,
+      specificationId,
+      countryId,
+    });
+    return this.getUserFullData(user.id);
   }
 }

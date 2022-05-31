@@ -5,7 +5,7 @@ import toStream = require('buffer-to-stream');
 import * as sharp from 'sharp';
 import * as dotenv from 'dotenv';
 import CloudinaryConfigOptions from '../../config/cloudinary.config';
-import { ImageMimeTypes } from '../../utils/file-filters';
+import { ImageMimeTypes } from '../../utils/file-validation';
 dotenv.config();
 
 @Injectable()
