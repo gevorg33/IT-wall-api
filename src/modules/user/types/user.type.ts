@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { RoleType } from '../../roles/types/role.type';
+import { RoleType } from '../../role/types/role.type';
 import { CompanyType } from '../../company/types/company.type';
 import { UserLanguageType } from '../../user-language/types/user-language.type';
 import { SkillType } from '../../skill/types/skill.type';

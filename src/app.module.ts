@@ -24,6 +24,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ProjectModule } from './modules/project/project.module';
 import { AttachmentModule } from './modules/attachment/attachment.module';
 import { CertificationModule } from './modules/certification/certification.module';
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CertificationModule } from './modules/certification/certification.modul
     }),
     SharedModule,
     AuthModule,
+    RoleModule,
     UserModule,
     CompanyModule,
     LanguageModule,

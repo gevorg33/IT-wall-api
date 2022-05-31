@@ -23,9 +23,9 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException('Unauthorized');
     }
     // if (user instanceof UserEntity) {
-    //   const exist = user.role.find((r) => roles.includes(r.name));
+    //   const exist = user.role.find((r) => role.includes(r.name));
     //   if (exist) return true;
-    // } else if (user instanceof Payee && roles.includes('Payee')) {
+    // } else if (user instanceof Payee && role.includes('Payee')) {
     //   return true;
     // }
     throw new ForbiddenException('You have no access');

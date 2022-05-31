@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRoles } from '../../common/constants/user-roles';
-import { RolesEntity } from '../roles/roles.entity';
+import { RoleEntity } from '../role/role.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { UserType } from './types/user.type';
 
@@ -14,8 +14,8 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(RolesEntity)
-    private readonly rolesRepository: Repository<RolesEntity>,
+    @InjectRepository(RoleEntity)
+    private readonly rolesRepository: Repository<RoleEntity>,
     @InjectRepository(CompanyEntity)
     private readonly companyRepository: Repository<CompanyEntity>,
   ) {}

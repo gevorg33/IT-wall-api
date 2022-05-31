@@ -7,3 +7,8 @@ export class SkillType {
   @ApiProperty({ example: 'Node.js' })
   name: string;
 }
+
+export class SkillResponseType {
+  @ApiProperty()
+  skill: SkillType;
+}

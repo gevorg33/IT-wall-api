@@ -10,7 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { hash } from 'bcrypt';
-import { RolesEntity } from '../roles/roles.entity';
+import { RoleEntity } from '../role/role.entity';
 import { CompanyEntity } from '../company/company.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -87,9 +87,9 @@ export class UserEntity extends AbstractEntity {
   @JoinColumn({ name: 'myCompanyId' })
   myCompany: CompanyEntity;
 
-  @ManyToOne(() => RolesEntity, (role) => role.id)
+  @ManyToOne(() => RoleEntity, (role) => role.id)
   @JoinColumn({ name: 'roleId' })
-  role: RolesEntity;
+  role: RoleEntity;
 
   @ManyToMany(() => CompanyEntity, (company) => company.id, {
     onDelete: 'CASCADE',
@@ -97,20 +97,7 @@ export class UserEntity extends AbstractEntity {
   @JoinTable()
   companies: CompanyEntity[];
 
-  @ManyToMany(() => SkillEntity, (skill) => skill.users, {
-    onDelete: 'CASCADE',
-  })
-  @JoinTable({
-    name: 'users_skills',
-    joinColumn: {
-      name: 'userId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'skillId',
-      referencedColumnName: 'id',
-    },
-  })
+  @OneToMany(() => SkillEntity, (skill) => skill.user)
   skills: SkillEntity[];
 
   @OneToMany(() => UserLanguageEntity, (userLanguage) => userLanguage.user)
