@@ -6,6 +6,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { RoleEntity } from '../modules/role/role.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -14,20 +15,21 @@ export class RolesGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
-    if (!roles) {
-      return true;
-    }
-
     const user = req.user;
     if (!user) {
       throw new UnauthorizedException('Unauthorized');
     }
-    // if (user instanceof UserEntity) {
-    //   const exist = user.role.find((r) => role.includes(r.name));
-    //   if (exist) return true;
-    // } else if (user instanceof Payee && role.includes('Payee')) {
-    //   return true;
-    // }
+
+    if (!roles) {
+      return true;
+    }
+
+    const userRole = await RoleEntity.findOne(user.roleId);
+
+    const exist = roles.includes(userRole.name);
+    if (exist) {
+      return true;
+    }
     throw new ForbiddenException('You have no access');
   }
 }

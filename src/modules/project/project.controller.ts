@@ -25,14 +25,18 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { ProjectResponseType } from './types/project.type';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { ProjectSize } from '../../utils/file-validation';
+import { RolesGuard } from '../../guards/roles.guard';
+import { Roles } from '../../decorators/roles.decorator';
+import { UserRoles } from '../../common/constants/user-roles';
 
 @Controller('projects')
 @ApiTags('Project')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Post('/')
+  @Roles(UserRoles.FREELANCER, UserRoles.COMPANY)
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Create Project' })
   @ApiOkResponse({ type: ProjectResponseType })
@@ -59,6 +63,7 @@ export class ProjectController {
   }
 
   @Patch('/:id')
+  @Roles(UserRoles.FREELANCER, UserRoles.COMPANY)
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Update Project' })
   @ApiOkResponse({ type: ProjectResponseType })
@@ -74,6 +79,7 @@ export class ProjectController {
   }
 
   @Delete('/:id')
+  @Roles(UserRoles.FREELANCER, UserRoles.COMPANY)
   @ApiOperation({ summary: 'Delete Project' })
   @ApiOkResponse({ type: ProjectResponseType })
   async delete(

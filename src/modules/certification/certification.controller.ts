@@ -25,14 +25,18 @@ import { CreateCertificationDto } from './dto/create-certification.dto';
 import { UpdateCertificationDto } from './dto/update-certification.dto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CertificationSize } from '../../utils/file-validation';
+import { RolesGuard } from '../../guards/roles.guard';
+import { Roles } from '../../decorators/roles.decorator';
+import { UserRoles } from '../../common/constants/user-roles';
 
 @Controller('certifications')
 @ApiTags('Certification')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class CertificationController {
   constructor(private readonly certService: CertificationService) {}
 
   @Post('/')
+  @Roles(UserRoles.FREELANCER, UserRoles.COMPANY)
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Create Certification' })
   @ApiOkResponse({ type: CertificationResponseType })
@@ -59,6 +63,7 @@ export class CertificationController {
   }
 
   @Patch('/:id')
+  @Roles(UserRoles.FREELANCER, UserRoles.COMPANY)
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Update Certification' })
   @ApiOkResponse({ type: CertificationResponseType })
@@ -78,6 +83,7 @@ export class CertificationController {
   }
 
   @Delete('/:id')
+  @Roles(UserRoles.FREELANCER, UserRoles.COMPANY)
   @ApiOperation({ summary: 'Delete Certification' })
   @ApiOkResponse({ type: CertificationResponseType })
   async delete(
