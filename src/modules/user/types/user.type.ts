@@ -9,6 +9,7 @@ import { EducationType } from '../../education/types/education.type';
 import { WorkExperienceType } from '../../work-experience/types/work-experience.type';
 import { AvatarType } from '../../avatar/types/avatar.type';
 import { ProjectType } from '../../project/types/project.type';
+import { CertificationType } from '../../certification/types/certification.type';
 
 export class UserType {
   @ApiProperty({ example: 23 })
@@ -55,6 +56,9 @@ export class UserType {
 
   @ApiPropertyOptional({ type: ProjectType, isArray: true })
   projects?: ProjectType[];
+
+  @ApiPropertyOptional({ type: CertificationType, isArray: true })
+  certifications?: CertificationType[];
 
   @ApiPropertyOptional({ type: WorkExperienceType, isArray: true })
   workExperience?: WorkExperienceType[];

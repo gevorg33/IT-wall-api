@@ -47,7 +47,7 @@ export class UserController {
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Get User Full Data' })
+  @ApiOperation({ summary: 'Get User Full Data (View User Profile)' })
   @ApiOkResponse({ type: UserResponseType })
   async getUserFullData(@Param('id') id: number): Promise<UserResponseType> {
     const user = await this.userService.getUserFullData(id);
