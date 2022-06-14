@@ -54,6 +54,7 @@ import { RoleModule } from './modules/role/role.module';
     ProjectModule,
     AttachmentModule,
     CertificationModule,
+    // JobModule,
   ],
   controllers: [AppController],
   providers: [
