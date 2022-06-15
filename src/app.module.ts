@@ -55,6 +55,7 @@ import { RoleModule } from './modules/role/role.module';
     AttachmentModule,
     CertificationModule,
     // JobModule,
+    // OfferModule,
   ],
   controllers: [AppController],
   providers: [
