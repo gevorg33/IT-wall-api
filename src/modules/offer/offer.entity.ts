@@ -30,6 +30,6 @@ export class OfferEntity extends AbstractEntity {
 
   ///////////////////////////////// Relations /////////////////////////////////
   // @JoinColumn({ name: 'userId' })
-  // @ManyToOne(() => UserEntity, (user) => user.projects)
+  // @ManyToOne(() => UserEntity, (user) => user.offers)
   // user: UserEntity;
 }
