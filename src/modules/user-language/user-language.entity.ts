@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { LanguageLevels } from '../../common/constants/prof-levels';
+import { LanguageLevels } from '../../common/constants/language-levels';
 import { UserEntity } from '../user/user.entity';
 import { LanguageEntity } from '../language/language.entity';
 

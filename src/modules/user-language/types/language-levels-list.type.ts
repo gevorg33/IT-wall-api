@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LanguageLevels } from '../../../common/constants/prof-levels';
+import { LanguageLevels } from '../../../common/constants/language-levels';
 
 export class LanguageLevelType {
   @ApiProperty({ enum: LanguageLevels, example: LanguageLevels.ELEMENTARY })

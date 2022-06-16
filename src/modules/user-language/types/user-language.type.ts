@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LanguageLevels } from '../../../common/constants/prof-levels';
+import { LanguageLevels } from '../../../common/constants/language-levels';
 import { LanguageType } from '../../language/types/language.type';
 
 export class UserLanguageType {

@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../user/user.entity';
+import { JobEntity } from '../job/job.entity';
 
 @Entity({ name: 'countries' })
 export class CountryEntity extends AbstractEntity {
@@ -17,4 +18,7 @@ export class CountryEntity extends AbstractEntity {
 
   @OneToMany(() => UserEntity, (user) => user.country)
   users: UserEntity[];
+
+  @OneToMany(() => JobEntity, (job) => job.country)
+  jobs: JobEntity[];
 }

@@ -25,6 +25,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { AttachmentModule } from './modules/attachment/attachment.module';
 import { CertificationModule } from './modules/certification/certification.module';
 import { RoleModule } from './modules/role/role.module';
+import { JobModule } from './modules/job/job.module';
 
 @Module({
   imports: [
@@ -54,7 +55,7 @@ import { RoleModule } from './modules/role/role.module';
     ProjectModule,
     AttachmentModule,
     CertificationModule,
-    // JobModule,
+    JobModule,
     // OfferModule,
   ],
   controllers: [AppController],

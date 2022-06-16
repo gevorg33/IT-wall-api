@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
-import { LanguageLevels } from '../../../common/constants/prof-levels';
+import { LanguageLevels } from '../../../common/constants/language-levels';
 
 export class CreateUserLanguageDto {
   @IsNotEmpty()

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LanguageEntity } from './language.entity';
-import { LanguageLevels } from '../../common/constants/prof-levels';
+import { LanguageLevels } from '../../common/constants/language-levels';
 import { LanguageLevelType } from '../user-language/types/language-levels-list.type';
 
 @Injectable()

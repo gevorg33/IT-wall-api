@@ -1,6 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserEntity } from '../user/user.entity';
+import { JobEntity } from '../job/job.entity';
 
 @Entity({ name: 'offers' })
 export class OfferEntity extends AbstractEntity {
@@ -13,7 +15,7 @@ export class OfferEntity extends AbstractEntity {
   jobId: number;
 
   @Column({ length: 120 })
-  @ApiProperty({ example: 'Graphic Designer - Jog Title' })
+  @ApiProperty({ example: 'Graphic Designer - Job Title' })
   title: string;
 
   @Column({ type: 'text', nullable: true })
@@ -29,7 +31,12 @@ export class OfferEntity extends AbstractEntity {
   offerPrice: number;
 
   ///////////////////////////////// Relations /////////////////////////////////
-  // @JoinColumn({ name: 'userId' })
-  // @ManyToOne(() => UserEntity, (user) => user.offers)
-  // user: UserEntity;
+
+  @JoinColumn({ name: 'userId' })
+  @ManyToOne(() => UserEntity, (user) => user.offers, { onDelete: 'CASCADE' })
+  user: UserEntity;
+
+  @JoinColumn({ name: 'jobId' })
+  @ManyToOne(() => JobEntity, (job) => job.offers)
+  job: JobEntity;
 }

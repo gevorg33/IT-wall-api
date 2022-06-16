@@ -25,6 +25,7 @@ import { WorkExperienceEntity } from '../work-experience/work-experience.entity'
 import { AvatarEntity } from '../avatar/avatar.entity';
 import { ProjectEntity } from '../project/project.entity';
 import { CertificationEntity } from '../certification/certification.entity';
+import { OfferEntity } from '../offer/offer.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -122,7 +123,10 @@ export class UserEntity extends AbstractEntity {
   @OneToMany(() => WorkExperienceEntity, (workExp) => workExp.user)
   workExperience: WorkExperienceEntity[];
 
-  @ManyToOne(() => CountryEntity)
+  @OneToMany(() => OfferEntity, (offer) => offer.user)
+  offers: OfferEntity[];
+
+  @ManyToOne(() => CountryEntity, (country) => country.users)
   @JoinColumn({ name: 'countryId' })
   country: CountryEntity;
 
