@@ -60,6 +60,24 @@ export class AttachmentService {
     return this.createMany(attachments, queryRunner);
   }
 
+  async createJobAttachments(
+    jobId: number,
+    files: Array<Express.Multer.File>,
+    queryRunner: QueryRunner = null,
+  ) {
+    const uploadedFiles = await this.uploadService.uploadJobFiles(jobId, files);
+    const attachments = uploadedFiles.map((file) => {
+      return {
+        itemType: AttachmentItemTypes.JOBS,
+        itemId: jobId,
+        folder: UploadFolders.JOBS,
+        key: file.public_id,
+        url: file.url,
+      };
+    });
+    return this.createMany(attachments, queryRunner);
+  }
+
   async createCertificationAttachments(
     certificationId: number,
     files: Array<Express.Multer.File>,
