@@ -46,8 +46,4 @@ export class CreateOfferDto {
     maxLength: 120,
   })
   description: string;
-
-  @IsOptional()
-  @ApiPropertyOptional({ description: 'Array Of Files' })
-  files: Array<Express.Multer.File>;
 }

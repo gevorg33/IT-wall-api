@@ -7,21 +7,31 @@ import {
   Patch,
   Post,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { JobService } from './job.service';
 import { Roles } from '../../decorators/roles.decorator';
 import { UserRoles } from '../../common/constants/user-roles';
-import { ApiConsumes, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { User } from '../../decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { JobResponseType } from './types/job.type';
 import { CreateJobDto } from './dto/create-job.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JobSize } from '../../utils/file-validation';
-import {UpdateJobDto} from "./dto/update-job.dto";
+import { UpdateJobDto } from './dto/update-job.dto';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { RolesGuard } from '../../guards/roles.guard';
 
 @Controller('job')
+@ApiTags('Jobs')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class JobController {
   constructor(private readonly jobService: JobService) {}
 

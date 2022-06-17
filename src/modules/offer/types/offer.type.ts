@@ -24,3 +24,8 @@ export class OfferResponseType {
   @ApiProperty()
   offer: OfferType;
 }
+
+export class OffersResponseType {
+  @ApiProperty()
+  offers: OfferType[];
+}
