@@ -16,8 +16,8 @@ import { User } from '../../decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
-import {OfferResponseType, OffersResponseType} from './types/offer.type';
-import { CreateOfferDto } from './dto/create-offer.dto';
+import { OfferResponseType, OffersResponseType } from './types/offer.type';
+import { CreateUpdateOfferDto } from './dto/create-update-offer.dto';
 
 @Controller('offer')
 @ApiTags('Offers')
@@ -31,7 +31,7 @@ export class OfferController {
   @ApiOkResponse({ type: OfferResponseType })
   async create(
     @User() me: UserEntity,
-    @Body() data: CreateOfferDto,
+    @Body() data: CreateUpdateOfferDto,
   ): Promise<OfferResponseType> {
     const offer = await this.offerService.create(me, data);
     return { offer };
@@ -52,7 +52,7 @@ export class OfferController {
   @ApiOkResponse({ type: OfferResponseType })
   async update(
     @User() me: UserEntity,
-    @Body() data: CreateOfferDto,
+    @Body() data: CreateUpdateOfferDto,
     @Param('id') id: number,
   ): Promise<OfferResponseType> {
     const offer = await this.offerService.update(id, me, data);

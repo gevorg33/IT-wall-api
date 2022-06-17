@@ -8,7 +8,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
-export class CreateOfferDto {
+export class CreateUpdateOfferDto {
   @IsNotEmpty()
   @IsInt()
   @Type(() => Number)

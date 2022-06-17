@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { OfferEntity } from './offer.entity';
 import { UserEntity } from '../user/user.entity';
 import { JobEntity } from '../job/job.entity';
-import { CreateOfferDto } from './dto/create-offer.dto';
+import { CreateUpdateOfferDto } from './dto/create-update-offer.dto';
 import {OfferResponseType, OffersResponseType} from './types/offer.type';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class OfferService {
     return offer;
   }
 
-  async create(user: UserEntity, data: CreateOfferDto): Promise<OfferEntity> {
+  async create(user: UserEntity, data: CreateUpdateOfferDto): Promise<OfferEntity> {
     const { jobId, budgetPrice, offerPrice, title, description } = data;
     const offer = await this.offerRepository.create({
       userId: user.id,
@@ -55,7 +55,7 @@ export class OfferService {
   async update(
     offerId: number,
     user: UserEntity,
-    data: CreateOfferDto,
+    data: CreateUpdateOfferDto,
   ): Promise<OfferEntity> {
     const offer = await this.getById(offerId);
     if (offer.userId !== user.id) {
