@@ -19,7 +19,7 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { OfferResponseType, OffersResponseType } from './types/offer.type';
 import { CreateUpdateOfferDto } from './dto/create-update-offer.dto';
 
-@Controller('offer')
+@Controller('offers')
 @ApiTags('Offers')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class OfferController {
@@ -41,7 +41,7 @@ export class OfferController {
   @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY)
   @ApiOperation({ summary: 'Get existing offers by job Id' })
   @ApiOkResponse({ type: OfferResponseType })
-  async getByJobId(@Param('id') id: number): Promise<OffersResponseType> {
+  async getByJobId(@Param('id') id: number): Promise<any> {
     const offers = await this.offerService.getOffersByJobId(id);
     return { offers };
   }

@@ -122,6 +122,8 @@ export class ProjectService {
         queryRunner,
       );
 
+      await this.projectRepository.delete(project.id);
+
       await queryRunner.commitTransaction();
 
       return project;

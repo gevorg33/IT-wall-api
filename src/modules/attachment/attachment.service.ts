@@ -68,7 +68,7 @@ export class AttachmentService {
     const uploadedFiles = await this.uploadService.uploadJobFiles(jobId, files);
     const attachments = uploadedFiles.map((file) => {
       return {
-        itemType: AttachmentItemTypes.JOBS,
+        itemType: AttachmentItemTypes.JOB,
         itemId: jobId,
         folder: UploadFolders.JOBS,
         key: file.public_id,

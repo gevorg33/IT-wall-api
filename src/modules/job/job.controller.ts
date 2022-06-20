@@ -29,7 +29,7 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 
-@Controller('job')
+@Controller('jobs')
 @ApiTags('Jobs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class JobController {

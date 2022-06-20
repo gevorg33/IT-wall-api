@@ -15,11 +15,7 @@ export class CreateProjectDto {
   @IsOptional()
   @Length(0, 1000)
   @IsString()
-  @ApiPropertyOptional({
-    example: 'Any Description Here...',
-    minLength: 0,
-    maxLength: 120,
-  })
+  @ApiPropertyOptional({ example: 'Any Description Here...', maxLength: 1000 })
   description: string;
 
   @IsOptional()

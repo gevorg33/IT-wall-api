@@ -30,20 +30,12 @@ export class CreateUpdateOfferDto {
   @IsNotEmpty()
   @Length(2, 120)
   @IsString()
-  @ApiProperty({
-    example: 'Coca Cola Support Website',
-    minLength: 2,
-    maxLength: 120,
-  })
+  @ApiProperty({ example: 'Any Offer Title...', minLength: 2, maxLength: 120 })
   title: string;
 
   @IsOptional()
   @Length(0, 1000)
   @IsString()
-  @ApiPropertyOptional({
-    example: 'Any Description Here...',
-    minLength: 0,
-    maxLength: 120,
-  })
+  @ApiPropertyOptional({ example: 'Any Description Here...', maxLength: 1000 })
   description: string;
 }

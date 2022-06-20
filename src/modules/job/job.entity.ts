@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  AfterLoad,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../user/user.entity';
@@ -8,6 +15,7 @@ import { JobPaymentDetails } from '../../common/constants/job-payment-details';
 import { CategoryEntity } from '../category/category.entity';
 import { CountryEntity } from '../country/country.entity';
 import { OfferEntity } from '../offer/offer.entity';
+import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
 
 @Entity({ name: 'jobs' })
 export class JobEntity extends AbstractEntity {
@@ -65,4 +73,13 @@ export class JobEntity extends AbstractEntity {
   offers: OfferEntity[];
 
   attachments?: AttachmentEntity[];
+
+  ///////////////////////////////// Triggers /////////////////////////////////
+
+  @AfterLoad()
+  async includeAttachments() {
+    this.attachments = await AttachmentEntity.find({
+      where: { itemType: AttachmentItemTypes.JOB, itemId: this.id },
+    });
+  }
 }

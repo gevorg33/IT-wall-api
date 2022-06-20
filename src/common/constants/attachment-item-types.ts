@@ -1,5 +1,5 @@
 export enum AttachmentItemTypes {
   'PROJECT' = 'Project',
-  'JOBS' = 'Jobs',
+  'JOB' = 'Job',
   'CERTIFICATION' = 'Certification',
 }

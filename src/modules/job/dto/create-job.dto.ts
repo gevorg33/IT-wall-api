@@ -25,11 +25,7 @@ export class CreateJobDto {
   @IsOptional()
   @Length(0, 1000)
   @IsString()
-  @ApiPropertyOptional({
-    example: 'Any Description Here...',
-    minLength: 0,
-    maxLength: 120,
-  })
+  @ApiPropertyOptional({ example: 'Any Description Here...', maxLength: 1000 })
   description: string;
 
   @IsNotEmpty()
@@ -40,11 +36,7 @@ export class CreateJobDto {
 
   @IsNotEmpty()
   @IsEnum(JobLevels)
-  @ApiProperty({
-    example: JobLevels.ENTRY_LEVEL,
-    minLength: 2,
-    maxLength: 120,
-  })
+  @ApiProperty({ enum: JobLevels, example: JobLevels.ENTRY_LEVEL })
   level: JobLevels;
 
   @IsNotEmpty()
@@ -56,9 +48,8 @@ export class CreateJobDto {
   @IsNotEmpty()
   @IsEnum(JobPaymentDetails)
   @ApiProperty({
+    enum: JobPaymentDetails,
     example: JobPaymentDetails.HOURLY_PAYMENT,
-    minLength: 2,
-    maxLength: 120,
   })
   paymentDetails: JobPaymentDetails;
 

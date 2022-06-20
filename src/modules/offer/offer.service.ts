@@ -9,13 +9,13 @@ import { OfferEntity } from './offer.entity';
 import { UserEntity } from '../user/user.entity';
 import { JobEntity } from '../job/job.entity';
 import { CreateUpdateOfferDto } from './dto/create-update-offer.dto';
-import {OfferResponseType, OffersResponseType} from './types/offer.type';
 
 @Injectable()
 export class OfferService {
   constructor(
     @InjectRepository(OfferEntity)
     private readonly offerRepository: Repository<OfferEntity>,
+    @InjectRepository(JobEntity)
     private readonly jobRepository: Repository<JobEntity>,
   ) {}
 
@@ -39,7 +39,10 @@ export class OfferService {
     return offer;
   }
 
-  async create(user: UserEntity, data: CreateUpdateOfferDto): Promise<OfferEntity> {
+  async create(
+    user: UserEntity,
+    data: CreateUpdateOfferDto,
+  ): Promise<OfferEntity> {
     const { jobId, budgetPrice, offerPrice, title, description } = data;
     const offer = await this.offerRepository.create({
       userId: user.id,

@@ -26,6 +26,6 @@ export class OfferResponseType {
 }
 
 export class OffersResponseType {
-  @ApiProperty()
+  @ApiProperty({ type: OfferType, isArray: true })
   offers: OfferType[];
 }

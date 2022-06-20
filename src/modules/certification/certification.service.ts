@@ -132,6 +132,8 @@ export class CertificationService {
         queryRunner,
       );
 
+      await this.certRepository.delete(certification.id);
+
       await queryRunner.commitTransaction();
 
       return certification;

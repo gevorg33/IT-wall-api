@@ -57,6 +57,7 @@ export class JobService {
         level,
         budgetPrice,
         paymentDetails,
+        countryId: user.countryId,
       });
       job = await queryRunner.manager.save(job);
 
@@ -107,6 +108,7 @@ export class JobService {
       job.level = level;
       job.budgetPrice = budgetPrice;
       job.paymentDetails = paymentDetails;
+      job.countryId = user.countryId;
 
       await this.attachmentService.createJobAttachments(
         job.id,
@@ -115,11 +117,12 @@ export class JobService {
       );
 
       await this.attachmentService.deleteItemAttachmentsByIds(
-        AttachmentItemTypes.JOBS,
+        AttachmentItemTypes.JOB,
         job.id,
         attachIdsForDelete,
         queryRunner,
       );
+
       const updated = await queryRunner.manager.save(job);
       await queryRunner.commitTransaction();
       return this.getById(updated.id);
@@ -140,11 +143,13 @@ export class JobService {
       await queryRunner.startTransaction();
 
       await this.attachmentService.deleteItemAttachmentsByIds(
-        AttachmentItemTypes.JOBS,
+        AttachmentItemTypes.JOB,
         job.id,
         job.attachments.map((attach) => attach.id),
         queryRunner,
       );
+
+      await this.jobRepository.delete(job.id);
 
       await queryRunner.commitTransaction();
 
