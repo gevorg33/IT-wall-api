@@ -3,6 +3,7 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../user/user.entity';
 import { JobEntity } from '../job/job.entity';
+import { OfferStatuses } from '../../common/constants/offer-statuses';
 
 @Entity({ name: 'offers' })
 export class OfferEntity extends AbstractEntity {
@@ -29,6 +30,14 @@ export class OfferEntity extends AbstractEntity {
   @Column()
   @ApiProperty({ example: 50 })
   offerPrice: number;
+
+  @Column({
+    type: 'enum',
+    enum: OfferStatuses,
+    default: OfferStatuses.PENDING,
+  })
+  @ApiProperty()
+  status: OfferStatuses;
 
   ///////////////////////////////// Relations /////////////////////////////////
 

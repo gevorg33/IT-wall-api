@@ -35,3 +35,8 @@ export class JobResponseType {
   @ApiProperty()
   job: JobType;
 }
+
+export class JobsListResponseType {
+  @ApiProperty()
+  jobs: JobType[];
+}

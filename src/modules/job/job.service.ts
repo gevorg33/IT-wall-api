@@ -14,6 +14,7 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
 import { UserJobService } from '../user-job/user-job.service';
 import { UserJobPermissions } from '../../common/constants/user-job-permissions';
+import { GetJobsFiltersDto } from './dto/get-jobs-filters.dto';
 
 @Injectable()
 export class JobService {
@@ -30,6 +31,11 @@ export class JobService {
       throw new NotFoundException('Job not found');
     }
     return job;
+  }
+
+  async getJobs(user: UserEntity, { status }: GetJobsFiltersDto) {
+    const jobs = await this.jobRepository.find({ publisherId: user.id });
+    return jobs;
   }
 
   async create(

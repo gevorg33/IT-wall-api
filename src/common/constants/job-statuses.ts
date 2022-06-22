@@ -1,4 +1,4 @@
-export enum UserJobStatuses {
+export enum JobStatuses {
   APPLIED = 'Applied',
   ONGOING = 'Ongoing',
   FINISHED = 'Finished',

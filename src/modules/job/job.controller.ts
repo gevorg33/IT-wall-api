@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -21,13 +22,14 @@ import {
 } from '@nestjs/swagger';
 import { User } from '../../decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
-import { JobResponseType } from './types/job.type';
+import { JobResponseType, JobsListResponseType } from './types/job.type';
 import { CreateJobDto } from './dto/create-job.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JobSize } from '../../utils/file-validation';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
+import { GetJobsFiltersDto } from './dto/get-jobs-filters.dto';
 
 @Controller('jobs')
 @ApiTags('Jobs')
@@ -38,7 +40,7 @@ export class JobController {
   @Post('/')
   @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY)
   @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Publish job' })
+  @ApiOperation({ summary: 'Publish Job' })
   @ApiOkResponse({ type: JobResponseType })
   @UseInterceptors(
     FilesInterceptor('files', 6, {
@@ -54,8 +56,19 @@ export class JobController {
     return { job };
   }
 
+  @Get('/')
+  @ApiOperation({ summary: 'Get Jobs By Filters' })
+  @ApiOkResponse({ type: JobsListResponseType })
+  async getJobs(
+    @User() me: UserEntity,
+    @Query() filters: GetJobsFiltersDto,
+  ): Promise<JobsListResponseType> {
+    const jobs = await this.jobService.getJobs(me, filters);
+    return { jobs };
+  }
+
   @Get('/:id')
-  @ApiOperation({ summary: 'Get existing job' })
+  @ApiOperation({ summary: 'Get Existing Job' })
   @ApiOkResponse({ type: JobResponseType })
   async getById(@Param('id') id: number): Promise<JobResponseType> {
     const job = await this.jobService.getById(id);
@@ -65,7 +78,7 @@ export class JobController {
   @Patch('/:id')
   @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY)
   @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Update existing job' })
+  @ApiOperation({ summary: 'Update Existing Job' })
   @ApiOkResponse({ type: JobResponseType })
   @UseInterceptors(FilesInterceptor('files', 6))
   async update(
@@ -80,7 +93,7 @@ export class JobController {
 
   @Delete('/:id')
   @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY)
-  @ApiOperation({ summary: 'Delete existing job' })
+  @ApiOperation({ summary: 'Delete Existing Job' })
   @ApiOkResponse({ type: JobResponseType })
   async delete(
     @User() me: UserEntity,

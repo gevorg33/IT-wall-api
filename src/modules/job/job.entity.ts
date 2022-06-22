@@ -16,7 +16,7 @@ import { CategoryEntity } from '../category/category.entity';
 import { CountryEntity } from '../country/country.entity';
 import { OfferEntity } from '../offer/offer.entity';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
-import { UserJobStatuses } from '../../common/constants/user-job-statuses';
+import { JobStatuses } from '../../common/constants/job-statuses';
 import { UserJobEntity } from '../user-job/user-job.entity';
 
 @Entity({ name: 'jobs' })
@@ -59,11 +59,11 @@ export class JobEntity extends AbstractEntity {
 
   @Column({
     type: 'enum',
-    enum: UserJobStatuses,
-    default: UserJobStatuses.NO_STATUS,
+    enum: JobStatuses,
+    default: JobStatuses.NO_STATUS,
   })
   @ApiProperty()
-  status: UserJobStatuses;
+  status: JobStatuses;
 
   ///////////////////////////////// Relations /////////////////////////////////
 
