@@ -4,9 +4,14 @@ import { JobService } from './job.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobEntity } from './job.entity';
 import { AttachmentModule } from '../attachment/attachment.module';
+import { UserJobModule } from '../user-job/user-job.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([JobEntity]), AttachmentModule],
+  imports: [
+    TypeOrmModule.forFeature([JobEntity]),
+    AttachmentModule,
+    UserJobModule,
+  ],
   controllers: [JobController],
   providers: [JobService],
   exports: [JobService],

@@ -27,6 +27,7 @@ import { CertificationModule } from './modules/certification/certification.modul
 import { RoleModule } from './modules/role/role.module';
 import { JobModule } from './modules/job/job.module';
 import { OfferModule } from './modules/offer/offer.module';
+import { UserJobModule } from './modules/user-job/user-job.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { OfferModule } from './modules/offer/offer.module';
     CertificationModule,
     JobModule,
     OfferModule,
+    UserJobModule,
   ],
   controllers: [AppController],
   providers: [

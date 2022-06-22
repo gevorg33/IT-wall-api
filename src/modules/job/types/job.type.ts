@@ -7,7 +7,7 @@ export class JobType {
   id: number;
 
   @ApiProperty({ example: 23 })
-  userId: number;
+  publisherId: number;
 
   @ApiProperty({ example: 1 })
   categoryId: number;

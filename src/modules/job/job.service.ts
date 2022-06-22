@@ -12,6 +12,8 @@ import { CreateJobDto } from './dto/create-job.dto';
 import { AttachmentService } from '../attachment/attachment.service';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
+import { UserJobService } from '../user-job/user-job.service';
+import { UserJobPermissions } from '../../common/constants/user-job-permissions';
 
 @Injectable()
 export class JobService {
@@ -19,6 +21,7 @@ export class JobService {
     @InjectRepository(JobEntity)
     private readonly jobRepository: Repository<JobEntity>,
     private readonly attachmentService: AttachmentService,
+    private readonly userJobService: UserJobService,
   ) {}
 
   async getById(jobId: number) {
@@ -50,7 +53,7 @@ export class JobService {
       await queryRunner.startTransaction();
 
       let job = this.jobRepository.create({
-        userId: user.id,
+        publisherId: user.id,
         title,
         description,
         categoryId,
@@ -60,6 +63,15 @@ export class JobService {
         countryId: user.countryId,
       });
       job = await queryRunner.manager.save(job);
+
+      await this.userJobService.create(
+        {
+          userId: user.id,
+          jobId: job.id,
+          permission: UserJobPermissions.PUBLISHER,
+        },
+        queryRunner,
+      );
 
       await this.attachmentService.createJobAttachments(
         job.id,
@@ -81,7 +93,7 @@ export class JobService {
     files: Array<Express.Multer.File>,
   ): Promise<JobEntity> {
     const job = await this.getById(jobId);
-    if (job.userId !== user.id) {
+    if (job.publisherId !== user.id) {
       throw new ForbiddenException('You have no access');
     }
 
@@ -134,7 +146,7 @@ export class JobService {
 
   async delete(jobId: number, user: UserEntity): Promise<JobEntity> {
     const job = await this.getById(jobId);
-    if (job.userId !== user.id) {
+    if (job.publisherId !== user.id) {
       throw new ForbiddenException('You have no access');
     }
     const queryRunner = getConnection().createQueryRunner();

@@ -16,12 +16,14 @@ import { CategoryEntity } from '../category/category.entity';
 import { CountryEntity } from '../country/country.entity';
 import { OfferEntity } from '../offer/offer.entity';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
+import { UserJobStatuses } from '../../common/constants/user-job-statuses';
+import { UserJobEntity } from '../user-job/user-job.entity';
 
 @Entity({ name: 'jobs' })
 export class JobEntity extends AbstractEntity {
   @Column()
   @ApiProperty({ example: 23 })
-  userId: number;
+  publisherId: number;
 
   @Column()
   @ApiProperty({ example: 2, nullable: true })
@@ -55,11 +57,21 @@ export class JobEntity extends AbstractEntity {
   @ApiProperty({ example: 13 })
   countryId: number;
 
+  @Column({
+    type: 'enum',
+    enum: UserJobStatuses,
+    default: UserJobStatuses.NO_STATUS,
+  })
+  @ApiProperty()
+  status: UserJobStatuses;
+
   ///////////////////////////////// Relations /////////////////////////////////
 
-  @JoinColumn({ name: 'userId' })
-  @ManyToOne(() => UserEntity, (user) => user.projects, { onDelete: 'CASCADE' })
-  user: UserEntity;
+  @JoinColumn({ name: 'publisherId' })
+  @ManyToOne(() => UserEntity, (user) => user.publishedJobs, {
+    onDelete: 'CASCADE',
+  })
+  publisher: UserEntity;
 
   @ManyToOne(() => CountryEntity, (country) => country.jobs)
   @JoinColumn({ name: 'countryId' })
@@ -71,6 +83,9 @@ export class JobEntity extends AbstractEntity {
 
   @OneToMany(() => OfferEntity, (offer) => offer.user)
   offers: OfferEntity[];
+
+  @OneToMany(() => UserJobEntity, (userJob) => userJob.job)
+  userJobs: UserJobEntity[];
 
   attachments?: AttachmentEntity[];
 

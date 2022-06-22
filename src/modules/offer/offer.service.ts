@@ -32,7 +32,8 @@ export class OfferService {
   }
 
   async getById(offerId: number): Promise<OfferEntity> {
-    const offer = this.offerRepository.findOne(offerId);
+    const offer = await this.offerRepository.findOne(offerId);
+    console.log(offer);
     if (!offer) {
       throw new NotFoundException('Job offer not found');
     }
