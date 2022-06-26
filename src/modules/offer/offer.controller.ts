@@ -16,7 +16,7 @@ import { User } from '../../decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
-import { OfferResponseType, OffersResponseType } from './types/offer.type';
+import { OfferResponseType } from './types/offer.type';
 import { CreateUpdateOfferDto } from './dto/create-update-offer.dto';
 
 @Controller('offers')
