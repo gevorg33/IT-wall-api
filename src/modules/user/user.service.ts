@@ -53,47 +53,55 @@ export class UserService {
   }
 
   async getUserFullData(id: number): Promise<UserType> {
-    return this.userRepository
-      .createQueryBuilder('user')
-      .where('user.id = :id', { id })
-      .leftJoinAndSelect('user.myCompany', 'myCompany')
-      .leftJoinAndSelect('user.country', 'country')
-      .leftJoinAndSelect('user.userLanguages', 'languages')
-      .leftJoinAndSelect('languages.language', 'language')
-      .leftJoinAndSelect('user.category', 'category')
-      .leftJoinAndSelect('user.specification', 'specification')
-      .leftJoinAndSelect('user.skills', 'skills')
-      .leftJoinAndSelect('user.educations', 'educations')
-      .leftJoinAndSelect('user.avatar', 'avatar')
-      .leftJoinAndSelect('user.projects', 'projects')
-      .leftJoinAndSelect('user.certifications', 'certifications')
-      .select([
-        'user',
-        'myCompany',
-        'country.name',
-        'country.code',
-        'languages.level',
-        'language.id',
-        'language.name',
-        'language.code',
-        'skills',
-        'category.id',
-        'category.name',
-        'specification.id',
-        'specification.name',
-        'educations',
-        'avatar',
-        'projects',
-        'certifications',
-      ])
-      .getOne();
+    try {
+      return this.userRepository
+        .createQueryBuilder('user')
+        .where('user.id = :id', { id })
+        .leftJoinAndSelect('user.myCompany', 'myCompany')
+        .leftJoinAndSelect('user.role', 'role')
+        .leftJoinAndSelect('user.country', 'country')
+        .leftJoinAndSelect('user.userLanguages', 'languages')
+        .leftJoinAndSelect('languages.language', 'language')
+        .leftJoinAndSelect('user.category', 'category')
+        .leftJoinAndSelect('user.specification', 'specification')
+        .leftJoinAndSelect('user.skills', 'skills')
+        .leftJoinAndSelect('user.educations', 'educations')
+        .leftJoinAndSelect('user.avatar', 'avatar')
+        .leftJoinAndSelect('user.projects', 'projects')
+        .leftJoinAndSelect('user.certifications', 'certifications')
+        .select([
+          'user',
+          'myCompany',
+          'role.id',
+          'role.name',
+          'country.name',
+          'country.code',
+          'languages.level',
+          'language.id',
+          'language.name',
+          'language.code',
+          'skills',
+          'category.id',
+          'category.name',
+          'specification.id',
+          'specification.name',
+          'educations',
+          'avatar',
+          'projects',
+          'certifications',
+        ])
+        .getOne();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async getUserWithCompany(id: number) {
     return this.userRepository
-      .createQueryBuilder('users')
-      .leftJoinAndSelect('users.myCompany', 'myCompany')
-      .where('users.id = :id', { id })
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.myCompany', 'myCompany')
+      .leftJoinAndSelect('user.role', 'role')
+      .where('user.id = :id', { id })
       .getOne();
   }
 
