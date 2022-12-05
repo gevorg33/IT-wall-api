@@ -34,8 +34,15 @@ export class JobService {
   }
 
   async getJobs(user: UserEntity, { status }: GetJobsFiltersDto) {
-    const jobs = await this.jobRepository.find({ publisherId: user.id });
-    return jobs;
+    const queryBuilder = await this.jobRepository
+      .createQueryBuilder('job')
+      .where('job.publisherId = :userId', { userId: user.id });
+
+    if (status) {
+      await queryBuilder.andWhere('job.status = :status', { status });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async create(
