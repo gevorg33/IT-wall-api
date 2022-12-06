@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../user/user.entity';
@@ -10,6 +10,10 @@ export class OfferEntity extends AbstractEntity {
   @Column()
   @ApiProperty({ example: 23 })
   userId: number;
+
+  @Column()
+  @ApiProperty({ example: 5, nullable: true })
+  parentId: number;
 
   @Column()
   @ApiProperty({ example: 955 })
@@ -45,7 +49,16 @@ export class OfferEntity extends AbstractEntity {
   @ManyToOne(() => UserEntity, (user) => user.offers, { onDelete: 'CASCADE' })
   user: UserEntity;
 
+  @JoinColumn({ name: 'parentId' })
+  @ManyToOne(() => OfferEntity, (offer) => offer.children, {
+    onDelete: 'SET NULL',
+  })
+  parent: OfferEntity;
+
   @JoinColumn({ name: 'jobId' })
   @ManyToOne(() => JobEntity, (job) => job.offers)
   job: JobEntity;
+
+  @OneToMany(() => OfferEntity, (offer) => offer.parent)
+  children: OfferEntity[];
 }

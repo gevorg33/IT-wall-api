@@ -28,6 +28,7 @@ import { CertificationEntity } from '../certification/certification.entity';
 import { OfferEntity } from '../offer/offer.entity';
 import { JobEntity } from '../job/job.entity';
 import { UserJobEntity } from '../user-job/user-job.entity';
+import { JobApplicationEntity } from '../job-application/job-application.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
@@ -127,6 +128,9 @@ export class UserEntity extends AbstractEntity {
 
   @OneToMany(() => JobEntity, (job) => job.publisher)
   publishedJobs: JobEntity[];
+
+  @OneToMany(() => JobApplicationEntity, (jApp) => jApp.user)
+  jobApplications: JobApplicationEntity[];
 
   @OneToMany(() => OfferEntity, (offer) => offer.user)
   offers: OfferEntity[];

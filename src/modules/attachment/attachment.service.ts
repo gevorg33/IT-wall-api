@@ -99,12 +99,34 @@ export class AttachmentService {
     return this.createMany(attachments, queryRunner);
   }
 
+  async createJobApplyAttachments(
+    jobAppId: number,
+    files: Array<Express.Multer.File>,
+    queryRunner: QueryRunner = null,
+  ) {
+    const uploadedFiles = await this.uploadService.uploadJobApplicationFiles(
+      jobAppId,
+      files,
+    );
+    const attachments = uploadedFiles.map((file) => {
+      return {
+        itemType: AttachmentItemTypes.JOB_APPLICATION,
+        itemId: jobAppId,
+        folder: UploadFolders.JOB_APPLICATIONS,
+        key: file.public_id,
+        url: file.url,
+      };
+    });
+    return this.createMany(attachments, queryRunner);
+  }
+
   async deleteItemAttachmentsByIds(
     itemType: AttachmentItemTypes,
     itemId: number,
     ids: number[],
     queryRunner: QueryRunner = null,
   ) {
+    console.log(ids);
     const keysForDelete = [];
     for (const id of ids) {
       const attach = await this.attachRepository.findOne({

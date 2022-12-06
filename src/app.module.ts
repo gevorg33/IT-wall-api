@@ -28,6 +28,7 @@ import { RoleModule } from './modules/role/role.module';
 import { JobModule } from './modules/job/job.module';
 import { OfferModule } from './modules/offer/offer.module';
 import { UserJobModule } from './modules/user-job/user-job.module';
+import { JobApplicationModule } from './modules/job-application/job-application.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { UserJobModule } from './modules/user-job/user-job.module';
     JobModule,
     OfferModule,
     UserJobModule,
+    JobApplicationModule,
   ],
   controllers: [AppController],
   providers: [

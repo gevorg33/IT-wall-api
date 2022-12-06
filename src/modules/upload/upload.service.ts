@@ -41,6 +41,17 @@ export class UploadService {
     return this.uService.uploadFiles(files, UploadFolders.CERTIFICATIONS);
   }
 
+  async uploadJobApplicationFiles(
+    jobAppId: number,
+    files: Array<Express.Multer.File>,
+  ) {
+    files = files.map((file) => {
+      file.originalname = `jobApp-${jobAppId}`;
+      return file;
+    });
+    return this.uService.uploadFiles(files, UploadFolders.JOB_APPLICATIONS);
+  }
+
   async deleteFile(key: string) {
     return this.uService.delete(key);
   }

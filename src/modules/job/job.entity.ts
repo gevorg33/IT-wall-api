@@ -18,6 +18,7 @@ import { OfferEntity } from '../offer/offer.entity';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
 import { JobStatuses } from '../../common/constants/job-statuses';
 import { UserJobEntity } from '../user-job/user-job.entity';
+import { JobApplicationEntity } from '../job-application/job-application.entity';
 
 @Entity({ name: 'jobs' })
 export class JobEntity extends AbstractEntity {
@@ -86,6 +87,9 @@ export class JobEntity extends AbstractEntity {
 
   @OneToMany(() => UserJobEntity, (userJob) => userJob.job)
   userJobs: UserJobEntity[];
+
+  @OneToMany(() => JobApplicationEntity, (jApp) => jApp.user)
+  jobApplications: JobApplicationEntity[];
 
   attachments?: AttachmentEntity[];
 
