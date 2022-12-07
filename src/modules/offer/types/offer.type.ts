@@ -1,4 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { OfferStatuses } from '../../../common/constants/offer-statuses';
+import { UserEntity } from '../../user/user.entity';
 
 export class OfferType {
   @ApiProperty({ example: 18 })
@@ -7,8 +9,8 @@ export class OfferType {
   @ApiProperty({ example: 23 })
   userId: number;
 
-  @ApiPropertyOptional({ example: 2 })
-  parentId: number;
+  @ApiProperty({ example: 24 })
+  toUserId: number;
 
   @ApiProperty({ example: 'Coca Cola Support Website' })
   title: string;
@@ -21,6 +23,15 @@ export class OfferType {
 
   @ApiProperty({ example: 50 })
   offerPrice: number;
+
+  @ApiProperty({ example: OfferStatuses.PENDING })
+  status: OfferStatuses;
+
+  @ApiPropertyOptional()
+  user?: UserEntity;
+
+  @ApiPropertyOptional()
+  toUser?: UserEntity;
 }
 
 export class OfferResponseType {

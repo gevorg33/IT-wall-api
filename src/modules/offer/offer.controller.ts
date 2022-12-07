@@ -6,18 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { OfferService } from './offer.service';
-import { Roles } from '../../decorators/roles.decorator';
-import { UserRoles } from '../../common/constants/user-roles';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '../../decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
-import { OfferResponseType } from './types/offer.type';
-import { CreateUpdateOfferDto } from './dto/create-update-offer.dto';
+import { OfferResponseType, OffersResponseType } from './types/offer.type';
+import { CreateOfferDto } from './dto/create-offer.dto';
+import { UpdateOfferDto } from './dto/update-offer.dto';
+import { UpdateOfferStatusDto } from './dto/update-offer-status.dto';
+import { GetOffersDto } from './dto/get-offers.dto';
 
 @Controller('offers')
 @ApiTags('Offers')
@@ -26,54 +28,75 @@ export class OfferController {
   constructor(private readonly offerService: OfferService) {}
 
   @Post('/')
-  @Roles(UserRoles.FREELANCER)
   @ApiOperation({ summary: 'Make an offer' })
   @ApiOkResponse({ type: OfferResponseType })
   async create(
     @User() me: UserEntity,
-    @Body() data: CreateUpdateOfferDto,
+    @Body() data: CreateOfferDto,
   ): Promise<OfferResponseType> {
     const offer = await this.offerService.create(me, data);
     return { offer };
   }
 
-  @Post('/:id/new-offer')
-  @Roles(UserRoles.FREELANCER)
+  @Post('/:id')
   @ApiOperation({ summary: 'New offer to offer' })
   @ApiOkResponse({ type: OfferResponseType })
   async newOffer(
     @User() me: UserEntity,
     @Param('id') id: number,
-    @Body() data: CreateUpdateOfferDto,
+    @Body() data: CreateOfferDto,
   ): Promise<OfferResponseType> {
-    const offer = await this.offerService.create(me, data);
+    const offer = await this.offerService.newOffer(me, id, data);
     return { offer };
   }
 
-  @Get('/:id')
-  @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY)
+  @Get('/')
   @ApiOperation({ summary: 'Get existing offers by job Id' })
-  @ApiOkResponse({ type: OfferResponseType })
-  async getByJobId(@Param('id') id: number): Promise<any> {
-    const offers = await this.offerService.getOffersByJobId(id);
+  @ApiOkResponse({ type: OffersResponseType })
+  async getByJobId(
+    @User() me: UserEntity,
+    @Query() qData: GetOffersDto,
+  ): Promise<OffersResponseType> {
+    const offers = await this.offerService.getOffersByJobId(me, qData);
     return { offers };
   }
 
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get existing offer' })
+  @ApiOkResponse({ type: OfferResponseType })
+  async getOfferData(
+    @User() me: UserEntity,
+    @Param('id') id: number,
+  ): Promise<OfferResponseType> {
+    const offer = await this.offerService.getOfferData(me, id);
+    return { offer };
+  }
+
   @Patch('/:id')
-  @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY, UserRoles.FREELANCER)
   @ApiOperation({ summary: 'Update existing offer' })
   @ApiOkResponse({ type: OfferResponseType })
   async update(
     @User() me: UserEntity,
-    @Body() data: CreateUpdateOfferDto,
+    @Body() data: UpdateOfferDto,
     @Param('id') id: number,
   ): Promise<OfferResponseType> {
     const offer = await this.offerService.update(id, me, data);
     return { offer };
   }
 
+  @Patch('/:id/status')
+  @ApiOperation({ summary: 'Accept or decline offer status' })
+  @ApiOkResponse({ type: OfferResponseType })
+  async updateStatus(
+    @User() me: UserEntity,
+    @Body() data: UpdateOfferStatusDto,
+    @Param('id') id: number,
+  ): Promise<OfferResponseType> {
+    const offer = await this.offerService.updateStatus(id, me, data);
+    return { offer };
+  }
+
   @Delete('/:id')
-  @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY, UserRoles.FREELANCER)
   @ApiOperation({ summary: 'Delete existing offer' })
   @ApiOkResponse({ type: OfferResponseType })
   async delete(

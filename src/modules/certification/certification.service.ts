@@ -80,6 +80,7 @@ export class CertificationService {
     }
 
     const attachIdsForDelete = JSON.parse(attachmentIdsForDelete);
+
     const queryRunner = getConnection().createQueryRunner();
 
     try {

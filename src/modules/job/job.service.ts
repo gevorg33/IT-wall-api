@@ -33,9 +33,8 @@ export class JobService {
 
   async getById(jobId: number) {
     const job = await this.jobRepository.findOne(jobId);
-    if (!job) {
-      throw new NotFoundException('Job not found');
-    }
+    if (!job) throw new NotFoundException('Job not found');
+
     return job;
   }
 

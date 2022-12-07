@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserJobEntity } from './user-job.entity';
 import { QueryRunner, Repository } from 'typeorm';
@@ -15,9 +15,20 @@ export class UserJobService {
     data: CreateUserJobDto,
     queryRunner: QueryRunner = null,
   ): Promise<UserJobEntity> {
-    const userJob = await this.userJobRepository.create(data);
-    return queryRunner
-      ? queryRunner.manager.save(UserJobEntity, userJob)
-      : this.userJobRepository.save(userJob);
+    const existed = await this.userJobRepository.findOne({
+      userId: data.userId,
+      jobId: data.jobId,
+    });
+
+    if (!existed) {
+      const userJob = await this.userJobRepository.create(data);
+      return queryRunner
+        ? queryRunner.manager.save(UserJobEntity, userJob)
+        : this.userJobRepository.save(userJob);
+    } else if (existed.permission !== data.permission) {
+      throw new NotAcceptableException('You are already have this job');
+    }
+
+    return existed;
   }
 }

@@ -24,7 +24,7 @@ import { UserEntity } from '../user/user.entity';
 import {
   JobAppResponseType,
   JobAppsResponseType,
-} from '../offer/types/job-application.type';
+} from './types/job-application.type';
 import { CreateJobAppDto } from './dto/create-job-application.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JobAppSize } from '../../utils/file-validation';

@@ -8,13 +8,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
-export class CreateUpdateOfferDto {
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
-  @ApiProperty({ example: 558 })
-  jobId: number;
-
+export class UpdateOfferDto {
   @IsNotEmpty()
   @IsInt()
   @Type(() => Number)
@@ -38,10 +32,4 @@ export class CreateUpdateOfferDto {
   @IsString()
   @ApiPropertyOptional({ example: 'Any Cover Letter...', maxLength: 1000 })
   cover: string;
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  @ApiPropertyOptional({ example: 558 })
-  parentId: number;
 }
