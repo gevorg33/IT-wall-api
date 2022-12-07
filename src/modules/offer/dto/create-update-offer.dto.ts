@@ -36,6 +36,12 @@ export class CreateUpdateOfferDto {
   @IsOptional()
   @Length(0, 1000)
   @IsString()
-  @ApiPropertyOptional({ example: 'Any Description Here...', maxLength: 1000 })
-  description: string;
+  @ApiPropertyOptional({ example: 'Any Cover Letter...', maxLength: 1000 })
+  cover: string;
+
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  @ApiPropertyOptional({ example: 558 })
+  parentId: number;
 }

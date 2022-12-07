@@ -29,7 +29,8 @@ import { JobSize } from '../../utils/file-validation';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
-import { GetJobsFiltersDto } from './dto/get-jobs-filters.dto';
+import { GetMyJobsDto } from './dto/get-jobs-filters.dto';
+import { SearchJobsDto } from './dto/search-jobs.dto';
 
 @Controller('jobs')
 @ApiTags('Jobs')
@@ -56,14 +57,25 @@ export class JobController {
     return { job };
   }
 
-  @Get('/')
-  @ApiOperation({ summary: 'Get Jobs By Filters' })
+  @Get('/my')
+  @ApiOperation({ summary: 'Get My Jobs' })
   @ApiOkResponse({ type: JobsListResponseType })
-  async getJobs(
+  async getMyJobs(
     @User() me: UserEntity,
-    @Query() filters: GetJobsFiltersDto,
+    @Query() qData: GetMyJobsDto,
   ): Promise<JobsListResponseType> {
-    const jobs = await this.jobService.getJobs(me, filters);
+    const jobs = await this.jobService.getMyJobs(me, qData);
+    return { jobs };
+  }
+
+  @Get('/')
+  @ApiOperation({ summary: 'Search Jobs' })
+  @ApiOkResponse({ type: JobsListResponseType })
+  async search(
+    @User() me: UserEntity,
+    @Query() qData: SearchJobsDto,
+  ): Promise<JobsListResponseType> {
+    const jobs = await this.jobService.search(me, qData);
     return { jobs };
   }
 

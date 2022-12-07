@@ -24,8 +24,8 @@ export class OfferEntity extends AbstractEntity {
   title: string;
 
   @Column({ type: 'text', nullable: true })
-  @ApiProperty({ example: 'Any Description Here...' })
-  description: string;
+  @ApiProperty({ example: 'Any cover letter...' })
+  cover: string;
 
   @Column()
   @ApiProperty({ example: 100 })

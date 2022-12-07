@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class OfferType {
   @ApiProperty({ example: 18 })
@@ -7,11 +7,14 @@ export class OfferType {
   @ApiProperty({ example: 23 })
   userId: number;
 
+  @ApiPropertyOptional({ example: 2 })
+  parentId: number;
+
   @ApiProperty({ example: 'Coca Cola Support Website' })
   title: string;
 
-  @ApiProperty({ example: 'Any Description Here...' })
-  description: string;
+  @ApiPropertyOptional({ example: 'Any Cover Letter...' })
+  cover: string;
 
   @ApiProperty({ example: 100 })
   budgetPrice: number;

@@ -37,6 +37,19 @@ export class OfferController {
     return { offer };
   }
 
+  @Post('/:id/new-offer')
+  @Roles(UserRoles.FREELANCER)
+  @ApiOperation({ summary: 'New offer to offer' })
+  @ApiOkResponse({ type: OfferResponseType })
+  async newOffer(
+    @User() me: UserEntity,
+    @Param('id') id: number,
+    @Body() data: CreateUpdateOfferDto,
+  ): Promise<OfferResponseType> {
+    const offer = await this.offerService.create(me, data);
+    return { offer };
+  }
+
   @Get('/:id')
   @Roles(UserRoles.CUSTOMER, UserRoles.COMPANY)
   @ApiOperation({ summary: 'Get existing offers by job Id' })

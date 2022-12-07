@@ -44,14 +44,14 @@ export class OfferService {
     user: UserEntity,
     data: CreateUpdateOfferDto,
   ): Promise<OfferEntity> {
-    const { jobId, budgetPrice, offerPrice, title, description } = data;
+    const { jobId, budgetPrice, offerPrice, title, cover } = data;
     const offer = await this.offerRepository.create({
       userId: user.id,
       jobId,
       budgetPrice,
       offerPrice,
       title,
-      description,
+      cover,
     });
     return this.offerRepository.save(offer);
   }
@@ -70,7 +70,7 @@ export class OfferService {
     offer.budgetPrice = data.budgetPrice;
     offer.offerPrice = data.offerPrice;
     offer.title = data.title;
-    offer.description = data.description;
+    offer.cover = data.cover;
 
     return this.offerRepository.save(offer);
   }

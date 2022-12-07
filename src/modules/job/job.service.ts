@@ -14,7 +14,11 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
 import { UserJobService } from '../user-job/user-job.service';
 import { UserJobPermissions } from '../../common/constants/user-job-permissions';
-import { GetJobsFiltersDto } from './dto/get-jobs-filters.dto';
+import { GetMyJobsDto } from './dto/get-jobs-filters.dto';
+import { JobStatuses } from '../../common/constants/job-statuses';
+import { SearchJobsDto } from './dto/search-jobs.dto';
+import { UserRoles } from '../../common/constants/user-roles';
+import { UserJobEntity } from '../user-job/user-job.entity';
 
 @Injectable()
 export class JobService {
@@ -23,6 +27,8 @@ export class JobService {
     private readonly jobRepository: Repository<JobEntity>,
     private readonly attachmentService: AttachmentService,
     private readonly userJobService: UserJobService,
+    @InjectRepository(UserJobEntity)
+    private readonly userJobRepository: Repository<UserJobEntity>,
   ) {}
 
   async getById(jobId: number) {
@@ -33,13 +39,42 @@ export class JobService {
     return job;
   }
 
-  async getJobs(user: UserEntity, { status }: GetJobsFiltersDto) {
-    const queryBuilder = await this.jobRepository
-      .createQueryBuilder('job')
-      .where('job.publisherId = :userId', { userId: user.id });
+  async getMyJobs(user: UserEntity, { status, permission }: GetMyJobsDto) {
+    if (!permission) {
+      permission =
+        user.role.name === UserRoles.CUSTOMER
+          ? UserJobPermissions.PUBLISHER
+          : UserJobPermissions.USER;
+    }
+    const queryBuilder = await this.userJobRepository
+      .createQueryBuilder('userJob')
+      .leftJoinAndSelect('userJob.job', 'job')
+      .where('userJob.userId = :uId', { uId: user.id })
+      .andWhere('userJob.permission = :permission', { permission });
 
     if (status) {
       await queryBuilder.andWhere('job.status = :status', { status });
+    }
+
+    const userJobs = await queryBuilder.getMany();
+
+    return userJobs.map((uj) => {
+      return { ...uj.job, permission: uj.permission };
+    });
+  }
+
+  async search(user: UserEntity, { q }: SearchJobsDto) {
+    const queryBuilder = await this.jobRepository
+      .createQueryBuilder('job')
+      .where('job.status = :status', { status: JobStatuses.NO_STATUS });
+
+    if (q) {
+      await queryBuilder.where(
+        'job.title iLIKE :q OR job.description iLIKE :q',
+        {
+          q: `%${q}%`,
+        },
+      );
     }
 
     return queryBuilder.getMany();
