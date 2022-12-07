@@ -9,6 +9,7 @@ import {
   UploadedFile,
   Patch,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../../decorators/user.decorator';
@@ -21,13 +22,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
-import { UserResponseType } from './types/user.type';
+import { UserListResponseType, UserResponseType } from './types/user.type';
 import { AvatarService } from '../avatar/avatar.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AvatarSize, imageFileFilter } from '../../utils/file-validation';
 import { AvatarDto } from '../avatar/dto/avatar.dto';
 import { UpdateUserAboutDto } from './dto/update-user-about.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { SearchFreelancerDto } from './dto/search-freelancer.dto';
 
 @Controller('users')
 @ApiTags('User')
@@ -44,6 +46,17 @@ export class UserController {
   async currentUser(@User() me: UserEntity): Promise<UserResponseType> {
     const user = await this.userService.getUserFullData(me.id);
     return { user };
+  }
+
+  @Get('/freelancer')
+  @ApiOperation({ summary: 'Search Freelancer' })
+  @ApiOkResponse({ type: UserListResponseType })
+  async searchFreeLancer(
+    @User() me: UserEntity,
+    @Query() qData: SearchFreelancerDto,
+  ): Promise<UserListResponseType> {
+    const users = await this.userService.searchFreelancer(me, qData);
+    return { users };
   }
 
   @Get('/:id')

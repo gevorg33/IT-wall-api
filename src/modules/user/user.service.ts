@@ -9,6 +9,7 @@ import { CompanyEntity } from '../company/company.entity';
 import { UserType } from './types/user.type';
 import { UpdateUserAboutDto } from './dto/update-user-about.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { SearchFreelancerDto } from './dto/search-freelancer.dto';
 
 @Injectable()
 export class UserService {
@@ -132,5 +133,48 @@ export class UserService {
       countryId,
     });
     return this.getUserFullData(user.id);
+  }
+
+  async searchFreelancer(
+    me: UserEntity,
+    qData: SearchFreelancerDto,
+  ): Promise<UserEntity[]> {
+    const { page, size, countryId, categoryId, languageId, level } = qData;
+
+    const queryBuilder = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.userLanguages', 'languages')
+      .leftJoinAndSelect('user.skills', 'skills')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .leftJoinAndSelect('user.projects', 'projects')
+      .leftJoinAndSelect('user.certifications', 'certifications')
+      .where('role.name = :r', { r: UserRoles.FREELANCER });
+
+    if (countryId) {
+      await queryBuilder.andWhere(`user.countryId = :countryId`, { countryId });
+    }
+    if (categoryId) {
+      await queryBuilder.andWhere(`user.categoryId = :categoryId`, {
+        categoryId,
+      });
+    }
+    if (languageId) {
+      await queryBuilder.andWhere(`user.languageId = :languageId`, {
+        languageId,
+      });
+    }
+    if (level) {
+      await queryBuilder.andWhere(`user.level = :level`, { level });
+    }
+
+    if (size) {
+      await queryBuilder.limit(size);
+    }
+    if (page) {
+      await queryBuilder.skip((page - 1) * size);
+    }
+
+    return queryBuilder.getMany();
   }
 }

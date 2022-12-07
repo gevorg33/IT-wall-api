@@ -68,3 +68,8 @@ export class UserResponseType {
   @ApiProperty()
   user: UserType;
 }
+
+export class UserListResponseType {
+  @ApiProperty({ type: UserType, isArray: true })
+  users: UserType[];
+}
