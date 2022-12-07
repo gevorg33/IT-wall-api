@@ -6,6 +6,7 @@ import { AttachmentEntity } from '../attachment/attachment.entity';
 import { JobPaymentDetails } from '../../common/constants/job-payment-details';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
 import { JobEntity } from '../job/job.entity';
+import { JobAppStatuses } from '../../common/constants/job-application-statuses';
 
 @Entity({ name: 'job_applications' })
 export class JobApplicationEntity extends AbstractEntity {
@@ -25,9 +26,13 @@ export class JobApplicationEntity extends AbstractEntity {
   @ApiProperty({ example: 100 })
   expectedPrice: number;
 
-  @Column({ default: false })
-  @ApiProperty({ example: 100 })
-  confirm: boolean;
+  @Column({
+    type: 'enum',
+    enum: JobAppStatuses,
+    default: JobAppStatuses.PENDING,
+  })
+  @ApiProperty()
+  status: JobAppStatuses;
 
   @Column({
     type: 'enum',

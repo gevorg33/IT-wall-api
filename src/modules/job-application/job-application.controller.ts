@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -30,6 +31,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { JobAppSize } from '../../utils/file-validation';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
+import { GetJobApplicationListDto } from './dto/get-job-application-list.dto';
+import { UpdateJobAppStatusDto } from './dto/update-job-application-status.dto';
 
 @Controller('job-applications')
 @ApiTags('Job Application')
@@ -79,8 +82,11 @@ export class JobApplicationController {
   @Get('/')
   @ApiOperation({ summary: 'Get Applied Jobs List' })
   @ApiOkResponse({ type: JobAppsResponseType })
-  async getList(@User() me: UserEntity): Promise<JobAppsResponseType> {
-    const jobApps = await this.jobAppService.getList(me);
+  async getList(
+    @User() me: UserEntity,
+    @Query() qData: GetJobApplicationListDto,
+  ): Promise<JobAppsResponseType> {
+    const jobApps = await this.jobAppService.getList(me, qData);
     return { jobApps };
   }
 
@@ -107,15 +113,16 @@ export class JobApplicationController {
     return { jobApp };
   }
 
-  @Patch('/:id/confirm')
+  @Patch('/:id/status')
   @Roles(UserRoles.CUSTOMER)
-  @ApiOperation({ summary: 'Update Job Application (for Customer)' })
+  @ApiOperation({ summary: 'Accept or decline jobApp status' })
   @ApiOkResponse({ type: JobAppResponseType })
-  async confirm(
+  async updateStatus(
     @User() me: UserEntity,
     @Param('id') id: number,
+    @Body() data: UpdateJobAppStatusDto,
   ): Promise<JobAppResponseType> {
-    const jobApp = await this.jobAppService.confirm(me, id);
+    const jobApp = await this.jobAppService.updateStatus(me, id, data);
     return { jobApp };
   }
 }

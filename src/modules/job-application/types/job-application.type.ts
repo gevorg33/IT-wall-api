@@ -3,6 +3,7 @@ import { JobPaymentDetails } from '../../../common/constants/job-payment-details
 import { AttachmentEntity } from '../../attachment/attachment.entity';
 import { UserType } from '../../user/types/user.type';
 import { JobType } from '../../job/types/job.type';
+import { JobAppStatuses } from '../../../common/constants/job-application-statuses';
 
 export class JobAppType {
   @ApiProperty({ example: 18 })
@@ -20,8 +21,8 @@ export class JobAppType {
   @ApiProperty({ example: 100 })
   expectedPrice: number;
 
-  @ApiProperty({ example: true })
-  confirm: boolean;
+  @ApiProperty({ example: JobAppStatuses.DECLINE })
+  status: JobAppStatuses;
 
   @ApiProperty({
     enum: JobPaymentDetails,

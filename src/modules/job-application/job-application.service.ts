@@ -13,18 +13,27 @@ import { UpdateJobAppDto } from './dto/update-job-application.dto';
 import { AttachmentService } from '../attachment/attachment.service';
 import { AttachmentItemTypes } from '../../common/constants/attachment-item-types';
 import { UserRoles } from '../../common/constants/user-roles';
+import { UpdateJobAppStatusDto } from './dto/update-job-application-status.dto';
+import { JobAppStatuses } from '../../common/constants/job-application-statuses';
+import { UserJobPermissions } from '../../common/constants/user-job-permissions';
+import { JobEntity } from '../job/job.entity';
+import { UserJobService } from '../user-job/user-job.service';
 
 @Injectable()
 export class JobApplicationService {
   constructor(
     @InjectRepository(JobApplicationEntity)
     private readonly jobAppRepository: Repository<JobApplicationEntity>,
+    @InjectRepository(JobEntity)
+    private readonly jobRepository: Repository<JobEntity>,
     private readonly attachmentService: AttachmentService,
+    private readonly userJobService: UserJobService,
   ) {}
 
   async getById(id: number): Promise<JobApplicationEntity> {
     const jobApp = await this.jobAppRepository.findOne(id);
     if (!jobApp) throw new NotFoundException('JobApp not found');
+
     return jobApp;
   }
 
@@ -34,6 +43,7 @@ export class JobApplicationService {
     files: Array<Express.Multer.File>,
   ): Promise<JobApplicationEntity> {
     const queryRunner = getConnection().createQueryRunner();
+
     try {
       await queryRunner.connect();
       await queryRunner.startTransaction();
@@ -104,22 +114,49 @@ export class JobApplicationService {
     }
   }
 
-  async confirm(user: UserEntity, id: number): Promise<JobApplicationEntity> {
-    const jobApp = await this.jobAppRepository.findOne(id, {
-      relations: ['job'],
-    });
+  async updateStatus(
+    user: UserEntity,
+    id: number,
+    { status }: UpdateJobAppStatusDto,
+  ): Promise<JobApplicationEntity> {
+    const jobApp = await this.getById(id);
 
-    if (!jobApp) throw new NotFoundException('JobApp not found');
+    const job = await this.jobRepository.findOne(jobApp.jobId);
 
-    if (jobApp.job.publisherId !== user.id) {
+    if (job.publisherId !== user.id) {
       throw new ForbiddenException('You have no access');
     }
 
-    jobApp.confirm = true;
+    if (status === JobAppStatuses.PENDING) return;
 
-    await this.jobAppRepository.save(jobApp);
+    jobApp.status = status;
 
-    return this.getById(id);
+    const queryRunner = getConnection().createQueryRunner();
+
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      await queryRunner.manager.save(jobApp);
+
+      if (status === JobAppStatuses.ACCEPT) {
+        await this.userJobService.create(
+          {
+            userId: jobApp.userId,
+            jobId: jobApp.jobId,
+            permission: UserJobPermissions.USER,
+          },
+          queryRunner,
+        );
+      }
+
+      await queryRunner.commitTransaction();
+
+      return this.getById(id);
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException(err);
+    }
   }
 
   async delete(user: UserEntity, id: number): Promise<JobApplicationEntity> {
@@ -147,15 +184,28 @@ export class JobApplicationService {
     return jobApp;
   }
 
-  async getList(user: UserEntity): Promise<JobApplicationEntity[]> {
+  async getList(
+    user: UserEntity,
+    { jobId, confirm },
+  ): Promise<JobApplicationEntity[]> {
     const queryBuilder = await this.jobAppRepository
       .createQueryBuilder('jobApp')
       .leftJoinAndSelect('jobApp.job', 'job');
 
+    if (jobId) {
+      await queryBuilder.where('jobApp.jobId = :jobId', { jobId });
+    }
+
+    if (confirm) {
+      await queryBuilder.where('jobApp.confirm = :confirm', {
+        confirm: confirm === 'true',
+      });
+    }
+
     if (user.role.name === UserRoles.CUSTOMER) {
-      await queryBuilder.where('job.publisherId = :uId', { uId: user.id });
+      await queryBuilder.andWhere('job.publisherId = :uId', { uId: user.id });
     } else {
-      await queryBuilder.where('jobApp.userId = :uId', { uId: user.id });
+      await queryBuilder.andWhere('jobApp.userId = :uId', { uId: user.id });
     }
 
     return queryBuilder.getMany();
